@@ -21,10 +21,9 @@ public class ItemRegistry {
 
     /**
      * Loads all .json items from the plugin's data folder.
-     *
      * @param dataFolder The plugin's data folder.
      */
-    public static void LoadItems(File dataFolder) {
+    public static void LoadItemDefinitions(File dataFolder) {
         Bukkit.getLogger().info("Loading item schema from " + dataFolder.getAbsolutePath());
 
         // Get the /items subfolder
@@ -51,9 +50,9 @@ public class ItemRegistry {
 
             // Parse a list of item definitions
             ItemDefinition[] itemDefinitions = gson.fromJson(json, ItemDefinition[].class);
-            Bukkit.getLogger().info("Loaded " + itemDefinitions.length + " item definitions from " + itemFile.getName());
+            Bukkit.getLogger().info("Loading " + itemDefinitions.length + " item definitions from " + itemFile.getName());
 
-            // Register each item definition
+            // Register each item definition in this file
             for (ItemDefinition itemDefinition : itemDefinitions) {
                 RegisterItem(itemDefinition);
             }
@@ -63,6 +62,10 @@ public class ItemRegistry {
         Bukkit.getLogger().info("Finished loading items. Loaded a total of " + itemRegistry.size() + " item definitions.");
     }
 
+    /**
+     * Registers an item definition into the registry.
+     * @param itemDefinition The item definition to register.
+     */
     public static void RegisterItem(ItemDefinition itemDefinition) {
         // Preconditions
         if (itemDefinition == null) {
@@ -73,9 +76,6 @@ public class ItemRegistry {
             Bukkit.getLogger().warning("Attempted to register item definition with null or empty id.");
             return;
         }
-
-        // Print loaded
-        Bukkit.getLogger().info("Loaded item definition: " + itemDefinition.id);
 
         // Register the item definition
         itemRegistry.put(itemDefinition.id, itemDefinition);

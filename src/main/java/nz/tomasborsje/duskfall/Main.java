@@ -10,7 +10,9 @@ import java.io.File;
  * Main class of the plugin.
  */
 public class Main extends JavaPlugin {
-
+    /**
+     * The plugin's data folder.
+     */
     public static File dataFolder;
 
     @Override
@@ -28,7 +30,7 @@ public class Main extends JavaPlugin {
         }
 
         // Load items
-        ItemRegistry.LoadItems(dataFolder);
+        ItemRegistry.LoadItemDefinitions(dataFolder);
     }
 
     @Override
