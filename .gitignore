@@ -9,6 +9,11 @@ target/
 *.iml
 *.ipr
 
+### MC Server ###
+server/logs/
+server/usercache.json
+server/crash-reports/
+
 ### Eclipse ###
 .apt_generated
 .classpath

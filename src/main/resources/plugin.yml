@@ -1,7 +1,7 @@
 name: Duskfall
 version: 0.0.1
 main: nz.tomasborsje.duskfall.Main
-author: @TomasBorsje
+author: TomasBorsje
 website: https://github.com/TomasBorsje/Duskfall
 api-version: 1.20
 load: STARTUP
