@@ -1,37 +1,10 @@
 [
     {
-        "type": "armor",
-        "id": "armor001",
-        "name": "Steel Armor",
-        "defense": 50
-    },
-    {
         "type": "weapon",
-        "id": "weapon001",
-        "name": "Sword of Power",
-        "damage": 30
-    },
-    {
-        "type": "armor",
-        "id": "armor002",
-        "name": "Dragonhide Armor",
-        "defense": 75
-    },
-    {
-        "type": "weapon",
-        "id": "weapon002",
-        "name": "Bow of Precision",
-        "damage": 40
-    },
-    {
-        "type": "item",
-        "id": "item003",
-        "name": "Health Potion"
-    },
-    {
-        "customClass": "nz.tomasborsje.duskfall.registries.FlamingBowDefinition",
-        "id": "flamingBow",
-        "name": "Flaming Bow",
-        "damage": 1510
+        "id": "whacking_stick",
+        "name": "Whacking Stick",
+        "damage": 10,
+        "material": "STICK",
+        "rarity": "RARE"
     }
 ]

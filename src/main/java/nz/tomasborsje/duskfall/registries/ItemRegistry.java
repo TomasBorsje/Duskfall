@@ -20,6 +20,15 @@ public class ItemRegistry {
     private static final HashMap<String, ItemDefinition> itemRegistry = new HashMap<>();
 
     /**
+     * Gets an item definition from the registry. Note that this is a clone, so can safely be modified.
+     * @param id The ID of the item definition.
+     * @return The item definition, null if not found.
+     */
+    public static ItemDefinition Get(String id) {
+        return itemRegistry.get(id).clone();
+    }
+
+    /**
      * Loads all .json items from the plugin's data folder.
      * @param dataFolder The plugin's data folder.
      */
@@ -76,6 +85,9 @@ public class ItemRegistry {
             Bukkit.getLogger().warning("Attempted to register item definition with null or empty id.");
             return;
         }
+
+        // Ensure item id is in uppercase
+        itemDefinition.id = itemDefinition.id.toUpperCase();
 
         // Register the item definition
         itemRegistry.put(itemDefinition.id, itemDefinition);

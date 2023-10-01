@@ -1,7 +1,12 @@
 name: Duskfall
 version: 0.0.1
-main: nz.tomasborsje.duskfall.Main
+main: nz.tomasborsje.duskfall.Duskfall
 author: TomasBorsje
 website: https://github.com/TomasBorsje/Duskfall
 api-version: 1.20
 load: STARTUP
+commands:
+  giveitem:
+    description: Gives the executor a custom item by its ID.
+    usage: /<command> <id>
+    permission: duskfall.admin
