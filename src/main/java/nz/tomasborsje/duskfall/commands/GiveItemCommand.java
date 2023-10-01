@@ -1,6 +1,6 @@
 package nz.tomasborsje.duskfall.commands;
 
-import nz.tomasborsje.duskfall.registries.ItemDefinition;
+import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
 import nz.tomasborsje.duskfall.util.ItemUtil;
 import org.bukkit.ChatColor;
@@ -21,8 +21,15 @@ public class GiveItemCommand implements CommandExecutor {
             String itemId = args[0].toUpperCase(); // Item id is first arg
             int count = args.length == 2 ? Integer.parseInt(args[1]) : 1; // Item count is second arg or 1 if not specified
 
+            // If the definition doesn't exist, tell the player and return
+            if(!ItemRegistry.Contains(itemId)) {
+                player.sendMessage(ChatColor.RED+"No item registered with ID "+itemId);
+                return true;
+            }
+
             // Get definition
             ItemDefinition definition = ItemRegistry.Get(itemId);
+
             // Create stack
             ItemStack stack = ItemUtil.CreateDefaultStack(definition);
 

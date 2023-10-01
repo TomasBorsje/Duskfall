@@ -1,6 +1,10 @@
 package nz.tomasborsje.duskfall.registries;
 
 import com.google.gson.*;
+import nz.tomasborsje.duskfall.definitions.ArmourDefinition;
+import nz.tomasborsje.duskfall.definitions.HealthFoodDefinition;
+import nz.tomasborsje.duskfall.definitions.ItemDefinition;
+import nz.tomasborsje.duskfall.definitions.MeleeWeaponDefinition;
 
 import java.lang.reflect.Type;
 
@@ -36,6 +40,7 @@ public class ItemDefinitionDeserializer implements JsonDeserializer<ItemDefiniti
             }
             case "armor" -> context.deserialize(json, ArmourDefinition.class);
             case "weapon" -> context.deserialize(json, MeleeWeaponDefinition.class);
+            case "food" -> context.deserialize(json, HealthFoodDefinition.class);
             default -> throw new JsonParseException("Unknown item type: " + itemType);
         };
     }

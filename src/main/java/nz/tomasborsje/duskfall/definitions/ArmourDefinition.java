@@ -1,4 +1,4 @@
-package nz.tomasborsje.duskfall.registries;
+package nz.tomasborsje.duskfall.definitions;
 
 import com.google.gson.annotations.SerializedName;
 

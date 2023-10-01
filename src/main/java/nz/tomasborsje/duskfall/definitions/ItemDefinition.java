@@ -1,14 +1,26 @@
-package nz.tomasborsje.duskfall.registries;
+package nz.tomasborsje.duskfall.definitions;
 
 import com.google.gson.annotations.SerializedName;
 import nz.tomasborsje.duskfall.core.Rarity;
 
-public class ItemDefinition {
+public class ItemDefinition implements Cloneable {
     /**
      * The ID of the item.
      */
     @SerializedName("id")
-    public String id = "";
+    public String id = null;
+
+    /**
+     * The type of the item, used only to display at the bottom of the tooltip.
+     */
+    @SerializedName("type")
+    public String type = null;
+
+    /**
+     * The description of the item, shown in dark gray at the bottom of the tooltip.
+     */
+    @SerializedName("description")
+    public String description = null;
 
     /**
      * The name of the item.
@@ -29,11 +41,12 @@ public class ItemDefinition {
     public Rarity rarity = Rarity.COMMON;
 
     @Override
-    protected ItemDefinition clone(){
+    public ItemDefinition clone() {
         try {
-            return (ItemDefinition) super.clone();
+            ItemDefinition clone = (ItemDefinition) super.clone();
+            return clone;
         } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+            throw new AssertionError();
         }
     }
 }

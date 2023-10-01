@@ -6,5 +6,15 @@
         "damage": 10,
         "material": "STICK",
         "rarity": "RARE"
+    },
+    {
+        "type": "food",
+        "id": "one_sushi_katsu",
+        "name": "One Sushi™ Katsu Bowl",
+        "description": "A bowl of rice topped with fried katsu chicken and kewpie mayo.",
+        "material": "BOWL",
+        "rarity": "RARE",
+        "healAmount": 150,
+        "consumable": true
     }
 ]

@@ -1,6 +1,6 @@
-package nz.tomasborsje.duskfall.definitions;
+package nz.tomasborsje.duskfall.definitions.custom;
 
-import nz.tomasborsje.duskfall.registries.MeleeWeaponDefinition;
+import nz.tomasborsje.duskfall.definitions.MeleeWeaponDefinition;
 import org.bukkit.Bukkit;
 
 public class FlamingBowDefinitionMelee extends MeleeWeaponDefinition {

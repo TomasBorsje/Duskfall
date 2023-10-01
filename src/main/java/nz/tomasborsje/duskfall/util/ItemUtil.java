@@ -1,6 +1,7 @@
 package nz.tomasborsje.duskfall.util;
 
 import net.minecraft.nbt.CompoundTag;
+import nz.tomasborsje.duskfall.definitions.*;
 import nz.tomasborsje.duskfall.registries.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,17 +20,18 @@ public class ItemUtil {
 
     /**
      * Returns a populated (e.g. enchantments/stat changes applied) ItemDefinition from the specified ItemStack.
+     *
      * @param stack The ItemStack to get the ItemDefinition from.
      * @return The populated ItemDefinition.
      */
     public static ItemDefinition GetPopulatedDefinition(ItemStack stack) {
-        if(!IsCustomItem(stack)) {
+        if (!IsCustomItem(stack)) {
             throw new IllegalArgumentException("ItemStack is not a custom item!");
         }
         ItemDefinition definition = ItemRegistry.Get(GetCustomId(stack));
 
         // If the item definition can be populated, supply the NBT tag
-        if (definition instanceof PopulateableDefinition populateable) {
+        if (definition instanceof Populateable populateable) {
             populateable.populate(NBTUtil.GetNBT(stack));
         }
 
@@ -38,6 +40,7 @@ public class ItemUtil {
 
     /**
      * Creates a new ItemStack with the default properties of the specified item definition.
+     *
      * @param definition The item definition to create the ItemStack from.
      * @return The created ItemStack.
      */
@@ -61,7 +64,7 @@ public class ItemUtil {
         // Set item meta values
         ItemMeta meta = stack.getItemMeta();
 
-        meta.setDisplayName(ChatColor.RESET +""+ definition.rarity.colour + definition.name);
+        meta.setDisplayName(ChatColor.RESET + "" + definition.rarity.colour + definition.name);
         meta.setLore(BuildLore(definition));
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -77,6 +80,7 @@ public class ItemUtil {
 
     /**
      * Returns the tooltip ("lore") of the specified ItemStack, assuming it is a custom item.
+     *
      * @param stack The ItemStack to get the tooltip from.
      * @return List of strings containing the tooltip.
      */
@@ -87,6 +91,7 @@ public class ItemUtil {
 
     /**
      * Returns the tooltip ("lore") of the specified item definition.
+     *
      * @param def The item definition to get the tooltip from.
      * @return List of strings containing the tooltip.
      */
@@ -105,15 +110,33 @@ public class ItemUtil {
             lore.add(ChatColor.WHITE + Icons.DefenseIcon + " Defense: " + armour.defense);
         }
 
+        // If the item is useable, add the use description
+        if (def instanceof Usable usable) {
+            lore.add("");
+            lore.add(ChatColor.YELLOW + "" + ChatColor.BOLD + "RIGHT CLICK: " + ChatColor.RESET + usable.getUseDescription());
+        }
+
+        // If the item has a description, add it
+        if (def.description != null) {
+            List<String> description = SplitDescription(def.description, 60);
+            lore.add("");
+            lore.addAll(description);
+        }
+
         // Add rarity last, in bold and in the color of the rarity
+        String rarityText = def.rarity.colour + "" + ChatColor.BOLD + def.rarity.name;
+        if(def.type != null) {
+            rarityText += " " + def.type;
+        }
         lore.add("");
-        lore.add(def.rarity.colour + "" + ChatColor.BOLD + def.rarity.name);
+        lore.add(rarityText);
 
         return lore;
     }
 
     /**
      * Returns the custom ID of the specified ItemStack.
+     *
      * @param stack The ItemStack to get the custom ID from.
      * @return The custom ID, "" if the item is not a custom item.
      */
@@ -127,7 +150,48 @@ public class ItemUtil {
         return nbt.getString("id");
     }
 
+    /**
+     * Returns whether the specified ItemStack is a custom item.
+     *
+     * @param stack The ItemStack to check.
+     * @return Whether the specified ItemStack is a custom item.
+     */
     public static boolean IsCustomItem(ItemStack stack) {
         return !GetCustomId(stack).equals("");
+    }
+
+    /**
+     * Splits a long description into multiple lines, ensuring that each line has a maximum
+     * length of approximately {@code maxLineLength} characters while preserving whole words.
+     *
+     * @param description   The long description to be split.
+     * @param maxLineLength The maximum length of each line, approximately.
+     * @return A list of lines, where each line is a substring of the original description with dark gray text.
+     */
+    public static List<String> SplitDescription(String description, int maxLineLength) {
+        List<String> lines = new ArrayList<>();
+        String[] words = description.split(" ");
+        StringBuilder currentLine = new StringBuilder(ChatColor.DARK_GRAY.toString());
+
+        for (String word : words) {
+            if (currentLine.length() + word.length() + 3 <= maxLineLength) {
+                // Add the word to the current line if it doesn't exceed the max length
+                if (currentLine.length() > 2) {
+                    currentLine.append(" ");
+                }
+                currentLine.append(word);
+            } else {
+                // Start a new line if adding the word would exceed the max length
+                lines.add(currentLine.toString());
+                currentLine = new StringBuilder(ChatColor.DARK_GRAY+word);
+            }
+        }
+
+        if (currentLine.length() > 0) {
+            // Add the remaining part of the description
+            lines.add(currentLine.toString());
+        }
+
+        return lines;
     }
 }

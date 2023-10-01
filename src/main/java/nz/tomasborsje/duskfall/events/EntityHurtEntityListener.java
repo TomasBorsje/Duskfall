@@ -1,7 +1,7 @@
 package nz.tomasborsje.duskfall.events;
 
-import nz.tomasborsje.duskfall.registries.ItemDefinition;
-import nz.tomasborsje.duskfall.registries.MeleeWeaponDefinition;
+import nz.tomasborsje.duskfall.definitions.ItemDefinition;
+import nz.tomasborsje.duskfall.definitions.MeleeWeaponDefinition;
 import nz.tomasborsje.duskfall.util.ItemUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

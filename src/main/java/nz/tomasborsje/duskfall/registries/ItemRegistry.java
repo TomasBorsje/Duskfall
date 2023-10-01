@@ -2,6 +2,7 @@ package nz.tomasborsje.duskfall.registries;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -26,6 +27,10 @@ public class ItemRegistry {
      */
     public static ItemDefinition Get(String id) {
         return itemRegistry.get(id).clone();
+    }
+
+    public static boolean Contains(String id) {
+        return itemRegistry.containsKey(id);
     }
 
     /**
@@ -78,16 +83,21 @@ public class ItemRegistry {
     public static void RegisterItem(ItemDefinition itemDefinition) {
         // Preconditions
         if (itemDefinition == null) {
-            Bukkit.getLogger().warning("Attempted to register null item definition.");
+            Bukkit.getLogger().warning("Attempted to register null item definition!");
             return;
         }
         if (itemDefinition.id == null || itemDefinition.id.isEmpty()) {
-            Bukkit.getLogger().warning("Attempted to register item definition with null or empty id.");
+            Bukkit.getLogger().warning("Attempted to register item definition with null or empty id!");
             return;
         }
 
         // Ensure item id is in uppercase
         itemDefinition.id = itemDefinition.id.toUpperCase();
+
+        // Ensure type is in uppercase if not null
+        if (itemDefinition.type != null) {
+            itemDefinition.type = itemDefinition.type.toUpperCase();
+        }
 
         // Register the item definition
         itemRegistry.put(itemDefinition.id, itemDefinition);
