@@ -10,3 +10,7 @@ commands:
     description: Gives the executor a custom item by its ID.
     usage: /<command> <id>
     permission: duskfall.admin
+  spawnentity:
+    description: Spawns a custom entity by its ID.
+    usage: /<command> <id>
+    permission: duskfall.admin

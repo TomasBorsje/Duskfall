@@ -15,6 +15,15 @@ public class MeleeWeaponDefinition extends ItemDefinition implements StatProvide
     @SerializedName("focus")
     public int focus = 0;
 
+    @SerializedName("defense")
+    public int defense = 0;
+
+    @SerializedName("health")
+    public int health = 0;
+
+    @SerializedName("mana")
+    public int mana = 0;
+
     @Override
     public int getStrength() {
         return strength;
@@ -32,11 +41,16 @@ public class MeleeWeaponDefinition extends ItemDefinition implements StatProvide
 
     @Override
     public int getDefense() {
-        return 0;
+        return defense;
     }
 
     @Override
-    public int getHealth() {
-        return 0;
+    public int getHealthBoost() {
+        return health;
+    }
+
+    @Override
+    public int getManaBoost() {
+        return mana;
     }
 }

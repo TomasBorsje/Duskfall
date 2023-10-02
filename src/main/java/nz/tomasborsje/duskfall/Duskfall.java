@@ -1,8 +1,10 @@
 package nz.tomasborsje.duskfall;
 
 import nz.tomasborsje.duskfall.commands.GiveItemCommand;
+import nz.tomasborsje.duskfall.commands.SpawnEntityCommand;
 import nz.tomasborsje.duskfall.events.*;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
+import nz.tomasborsje.duskfall.registries.MobRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -40,12 +42,15 @@ public class Duskfall extends JavaPlugin {
         // Load items
         ItemRegistry.LoadItemDefinitions(dataFolder);
 
+        // Load mobs
+        MobRegistry.LoadMobDefinitions(dataFolder);
+
         // Register commands and event listeners
         registerCommands();
         registerEvents();
 
         // Start server tick event
-        serverTickRunner.runTaskTimer(this, 0, 1);
+        serverTickRunner.runTaskTimer(plugin, 0, 1);
     }
 
     @Override
@@ -55,14 +60,16 @@ public class Duskfall extends JavaPlugin {
 
     void registerEvents() {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new WorldLoadListener(), this);
-        pluginManager.registerEvents(new ItemUseListener(), this);
-        pluginManager.registerEvents(new PlayerJoinListener(), this);
-        pluginManager.registerEvents(new PlayerDisconnectListener(), this);
+        pluginManager.registerEvents(new WorldLoadListener(), plugin);
+        pluginManager.registerEvents(new ItemUseListener(), plugin);
+        pluginManager.registerEvents(new PlayerJoinListener(), plugin);
+        pluginManager.registerEvents(new PlayerDisconnectListener(), plugin);
+        pluginManager.registerEvents(new EntityHurtEntityListener(), plugin);
     }
 
     void registerCommands() {
         getCommand("giveitem").setExecutor(new GiveItemCommand());
+        getCommand("spawnentity").setExecutor(new SpawnEntityCommand());
         Bukkit.getLogger().info("Registered commands.");
     }
 }

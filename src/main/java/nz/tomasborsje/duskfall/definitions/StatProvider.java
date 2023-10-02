@@ -27,5 +27,18 @@ public interface StatProvider {
     /**
      * @return The health bonus of the item.
      */
-    int getHealth();
+    int getHealthBoost();
+
+    /**
+     * @return The mana bonus of the item.
+     */
+    int getManaBoost();
+
+    /**
+     * @return Whether the item actually has any stat bonuses. Included as not every melee weapon will have stats despite
+     * the base class implementing this interface.
+     */
+    default boolean hasStats() {
+        return getDefense() > 0 || getStrength() > 0 || getIntelligence() > 0 || getFocus() > 0 || getHealthBoost() > 0 || getManaBoost() > 0;
+    }
 }

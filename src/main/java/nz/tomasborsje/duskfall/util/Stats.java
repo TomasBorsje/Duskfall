@@ -11,7 +11,7 @@ public class Stats {
      */
     public static int BaseMaxHealthForPlayer(int level) {
         // TODO DEBUG: Player gains 20 max health per level
-        return 20 * level;
+        return 50 + (15 * level);
     }
 
     /**
@@ -21,6 +21,10 @@ public class Stats {
      */
     public static int BaseMaxHealthForMob(int level) {
         // TODO DEBUG: Mob gains 10 max health per level
-        return 10 * level;
+        return 20 + (10 * level);
+    }
+
+    public static int BaseMaxManaForPlayer(int level) {
+        return 30 + (10 * level);
     }
 }

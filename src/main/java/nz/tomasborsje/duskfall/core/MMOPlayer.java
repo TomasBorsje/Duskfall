@@ -4,10 +4,10 @@ import net.md_5.bungee.api.chat.TextComponent;
 import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import nz.tomasborsje.duskfall.definitions.MeleeWeaponDefinition;
 import nz.tomasborsje.duskfall.definitions.StatProvider;
-import nz.tomasborsje.duskfall.registries.ItemRegistry;
 import nz.tomasborsje.duskfall.util.Icons;
 import nz.tomasborsje.duskfall.util.ItemUtil;
 import nz.tomasborsje.duskfall.util.Stats;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -20,15 +20,17 @@ import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
  */
 public class MMOPlayer implements MMOEntity {
     private final Player bukkitPlayer;
+    private int level = 1;
     private int health;
     private int maxHealth;
-    private int level = 1;
+    private int mana;
+    private int maxMana;
     private int defense = 0;
     private int strength = 0;
     private int focus = 0;
     private int intelligence = 0;
-
     private int regenTimer = 0;
+    private int ticksSinceCombat = 0;
 
     /**
      * Creates a new MMOPlayer with the given Bukkit player.
@@ -36,8 +38,9 @@ public class MMOPlayer implements MMOEntity {
      */
     public MMOPlayer(Player player) {
         bukkitPlayer = player;
-        fillHealthAndMana();
+        ticksSinceCombat = 250; // Out of combat
         recalculateStats();
+        fillHealthAndMana();
     }
 
     /**
@@ -45,13 +48,20 @@ public class MMOPlayer implements MMOEntity {
      */
     private void fillHealthAndMana() {
         health = maxHealth;
+        mana = maxMana;
     }
 
     /**
      * Recalculates the player's stats.
      */
     public void recalculateStats() {
+        // Reset stats
         maxHealth = Stats.BaseMaxHealthForPlayer(level);
+        maxMana = Stats.BaseMaxManaForPlayer(level);
+        defense = 0;
+        strength = 0;
+        focus = 0;
+        intelligence = 0;
 
         // For each equipped armour piece, gets its definition and add its stats
         for (ItemStack armorItem : bukkitPlayer.getEquipment().getArmorContents()) {
@@ -75,8 +85,11 @@ public class MMOPlayer implements MMOEntity {
         }
 
         // Clamp health and mana to max
-        if(health > maxHealth) {
+        if (health > maxHealth) {
             health = maxHealth;
+        }
+        if (mana > maxMana) {
+            mana = maxMana;
         }
     }
 
@@ -88,12 +101,16 @@ public class MMOPlayer implements MMOEntity {
         strength += item.getStrength();
         focus += item.getFocus();
         intelligence += item.getIntelligence();
-        maxHealth += item.getHealth();
+        maxHealth += item.getHealthBoost();
+        maxMana += item.getManaBoost();
         defense += item.getDefense();
     }
 
     @Override
     public void tick() {
+        // Tick combat tracker
+        ticksSinceCombat++;
+
         // Recalculate stats.
         recalculateStats();
 
@@ -117,6 +134,18 @@ public class MMOPlayer implements MMOEntity {
             // Regen health
             // TODO DEBUG: Regen 1 health per tick
             heal(1);
+            gainMana(1);
+        }
+    }
+
+    /**
+     * Increases the player's current mana.
+     * @param mana The amount of mana to gain.
+     */
+    public void gainMana(int mana) {
+        this.mana += mana;
+        if(this.mana > maxMana) {
+            this.mana = maxMana;
         }
     }
 
@@ -126,13 +155,28 @@ public class MMOPlayer implements MMOEntity {
      * @param damage The amount of damage to deal to the entity.
      */
     @Override
-    public void hurt(int damage) {
+    public void hurt(MMOEntity source, int damage) {
         // TODO DEBUG: Use defense values, etc.
+        markCombat();
         health -= damage;
         // If health is below 0, kill the player
         if(health <= 0) {
-            kill();
+            kill(source);
         }
+    }
+
+    /**
+     * Mark the player as being in combat.
+     */
+    public void markCombat() {
+        ticksSinceCombat = 0;
+    }
+
+    /**
+     * @return Whether the player is in combat or not.
+     */
+    public boolean isInCombat() {
+        return ticksSinceCombat < 200;
     }
 
     /**
@@ -148,14 +192,35 @@ public class MMOPlayer implements MMOEntity {
         }
     }
 
+    @Override
+    public int getCurrentDamage() {
+        // Get the player's held custom item
+        ItemStack heldItem = bukkitPlayer.getEquipment().getItemInMainHand();
+
+        // If it's a melee weapon, return its damage
+        if (ItemUtil.IsCustomItem(heldItem)) {
+            ItemDefinition definition = ItemUtil.GetPopulatedDefinition(heldItem);
+            if (definition instanceof MeleeWeaponDefinition meleeWeaponDefinition) {
+                return meleeWeaponDefinition.damage;
+            }
+        }
+
+        return 1; // Return base melee damage of 1
+    }
+
+    @Override
+    public String getEntityName() {
+        return bukkitPlayer.getName();
+    }
 
     /**
      * Kill the player, teleporting them to spawn and taking away some of their money, etc.
      */
     @Override
-    public void kill() {
+    public void kill(MMOEntity killer) {
         // TODO
-        bukkitPlayer.sendMessage(ChatColor.RED + "You died!");
+        ticksSinceCombat = 1000; // Exit combat
+        bukkitPlayer.sendMessage(ChatColor.RED + "You died to " + killer.getEntityName() + "!");
         fillHealthAndMana();
     }
 
@@ -174,8 +239,22 @@ public class MMOPlayer implements MMOEntity {
     void displayActionBarInfo() {
         String message = "";
 
+        // If we're in combat, add the combat icon to the left
+        if(isInCombat()) {
+            message += ChatColor.DARK_RED + "!"+Icons.StrengthIcon + "!  ";
+        }
+
         // Add health/max health display
         message += ChatColor.RED + Icons.HealthIcon + " " + ChatColor.WHITE + health + "/" + maxHealth;
+        // Add defense display
+        message += " " + ChatColor.GREEN + Icons.DefenseIcon + " " + ChatColor.WHITE + defense;
+        // Add mana display
+        message += " " + ChatColor.BLUE + Icons.ManaIcon + " " + ChatColor.WHITE + mana + "/" + maxMana;
+
+        // Add combat indicator to the right too
+        if(isInCombat()) {
+            message += "  " + ChatColor.DARK_RED +"!"+ Icons.StrengthIcon +"!";
+        }
 
         // Display
         bukkitPlayer.spigot().sendMessage(ACTION_BAR, TextComponent.fromLegacyText(message));

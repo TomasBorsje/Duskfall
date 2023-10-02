@@ -1,6 +1,14 @@
 package nz.tomasborsje.duskfall.handlers;
 
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import nz.tomasborsje.duskfall.core.MMOEntity;
+import nz.tomasborsje.duskfall.core.MMOMob;
+import nz.tomasborsje.duskfall.core.NMSMob;
+import nz.tomasborsje.duskfall.definitions.MobDefinition;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 
 import javax.annotation.Nullable;
@@ -20,7 +28,7 @@ public class EntityHandler {
      * @param entity The Bukkit entity.
      * @return The custom entity.
      */
-    public static @Nullable MMOEntity GetEntity(LivingEntity entity) {
+    public static @Nullable MMOEntity GetEntity(org.bukkit.entity.Entity entity) {
         return entities.get(entity.getEntityId());
     }
 
@@ -44,7 +52,7 @@ public class EntityHandler {
      * Remove a custom entity from the handler.
      * @param entity The Bukkit entity to remove.
      */
-    public static void RemoveEntity(LivingEntity entity) {
+    public static void RemoveEntity(org.bukkit.entity.Entity entity) {
         entities.remove(entity.getEntityId());
     }
 
@@ -75,5 +83,43 @@ public class EntityHandler {
         for (MMOEntity entity : entities.values()) {
             entity.tick();
         }
+    }
+
+    /**
+     * Spawn a mob in-world from a definition.
+     * @param definition The definition of the mob to spawn.
+     * @param loc The location to spawn the mob at.
+     */
+    public static void SpawnMob(MobDefinition definition, Location loc) {
+
+        // Spawn mob by classname
+        String className = "nz.tomasborsje.duskfall.definitions.mobs." + definition.classname;
+        Entity nmsEntity;
+        try {
+            Class<?> mobClass = Class.forName(className);
+            Object mob = mobClass.getConstructor(Location.class).newInstance(loc);
+            if(mob instanceof NMSMob) {
+                nmsEntity = (Entity)mob;
+                nmsEntity.setPos(loc.getX(), loc.getY(), loc.getZ()); // Set location
+                nmsEntity.setCustomNameVisible(true);
+                // Add to level
+                Level level = ((CraftWorld) loc.getWorld()).getHandle();
+                level.addFreshEntity(nmsEntity);
+            }
+            else {
+                throw new RuntimeException("Mob class " + className + " does not implement NMSMob");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Exception during mob spawning: " + e);
+        }
+
+        // Convert to Bukkit LivingEntity
+        LivingEntity bukkitEntity = (LivingEntity) nmsEntity.getBukkitEntity();
+
+        // Create MMOEntity
+        MMOEntity entity = new MMOMob(bukkitEntity, definition);
+
+        // Store
+        EntityHandler.AddEntity(entity);
     }
 }

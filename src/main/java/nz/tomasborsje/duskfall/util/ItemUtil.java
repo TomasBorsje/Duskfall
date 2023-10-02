@@ -109,10 +109,10 @@ public class ItemUtil {
         }
 
         // If the definition provides stats, display them
-        if (def instanceof StatProvider statProvider) {
+        if (def instanceof StatProvider statProvider && statProvider.hasStats()) {
             lore.add("");
-            if (statProvider.getHealth() > 0) {
-                lore.add(ChatColor.GREEN + Icons.HealthIcon + " +" + statProvider.getHealth() + " Health");
+            if (statProvider.getHealthBoost() > 0) {
+                lore.add(ChatColor.GREEN + Icons.HealthIcon + " +" + statProvider.getHealthBoost() + " Health");
             }
             if (statProvider.getDefense() > 0) {
                 lore.add(ChatColor.WHITE + Icons.DefenseIcon + " +" + statProvider.getDefense() + " Defense");

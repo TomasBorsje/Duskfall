@@ -18,6 +18,9 @@ public class ArmourDefinition extends ItemDefinition implements StatProvider {
     @SerializedName("health")
     public int health = 0;
 
+    @SerializedName("mana")
+    public int mana = 0;
+
     @Override
     public int getDefense() {
         return defense;
@@ -39,7 +42,12 @@ public class ArmourDefinition extends ItemDefinition implements StatProvider {
     }
 
     @Override
-    public int getHealth() {
+    public int getHealthBoost() {
         return health;
+    }
+
+    @Override
+    public int getManaBoost() {
+        return mana;
     }
 }

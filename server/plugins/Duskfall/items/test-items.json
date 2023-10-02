@@ -78,6 +78,8 @@
         "damage": 1000,
         "focus": 1000,
         "strength": 1000,
-        "intelligence": 1000
+        "intelligence": 1000,
+        "health": 1000,
+        "mana": 1000
     }
 ]

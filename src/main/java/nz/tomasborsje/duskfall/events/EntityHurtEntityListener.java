@@ -1,13 +1,11 @@
 package nz.tomasborsje.duskfall.events;
 
-import nz.tomasborsje.duskfall.definitions.ItemDefinition;
-import nz.tomasborsje.duskfall.definitions.MeleeWeaponDefinition;
-import nz.tomasborsje.duskfall.util.ItemUtil;
-import org.bukkit.entity.Player;
+import nz.tomasborsje.duskfall.core.MMOEntity;
+import nz.tomasborsje.duskfall.handlers.EntityHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class EntityHurtEntityListener implements Listener {
     @EventHandler
@@ -17,23 +15,16 @@ public class EntityHurtEntityListener implements Listener {
         event.setDamage(0);
 
         // Ensure both entities are custom entities
+        MMOEntity attacker = EntityHandler.GetEntity(event.getDamager());
+        MMOEntity defender = EntityHandler.GetEntity(event.getEntity());
 
+        // If either is null, return
+        if(attacker == null || defender == null) { return; }
 
-        // Debug: If the attacker is a player, get their custom held item
-        if(event.getDamager() instanceof Player player) {
-            // Get the item in the player's main hand
-            ItemStack stack = player.getInventory().getItemInMainHand();
+        // Get the attacker's damage
+        int damage = attacker.getCurrentDamage();
 
-            // If the item isn't custom, ignore
-            if(!ItemUtil.IsCustomItem(stack)) return;
-
-            // Get the custom definition
-            ItemDefinition itemDefinition = ItemUtil.GetPopulatedDefinition(stack);
-
-            // If the item is a melee weapon, apply its damage
-            if(itemDefinition instanceof MeleeWeaponDefinition weapon) {
-                player.sendMessage("You hit with a weapon! Damage: " + weapon.damage);
-            }
-        }
+        // Hurt the defender
+        defender.hurt(attacker, damage);
     }
 }
