@@ -1,6 +1,7 @@
 package nz.tomasborsje.duskfall.util;
 
 import net.minecraft.nbt.CompoundTag;
+import nz.tomasborsje.duskfall.core.Rarity;
 import nz.tomasborsje.duskfall.definitions.*;
 import nz.tomasborsje.duskfall.registries.*;
 import org.bukkit.ChatColor;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class ItemUtil {
         if (!IsCustomItem(stack)) {
             throw new IllegalArgumentException("ItemStack is not a custom item!");
         }
-        ItemDefinition definition = ItemRegistry.Get(GetCustomId(stack));
+        ItemDefinition definition = ItemUtil.GetItemDefinition(stack);
 
         // If the item definition can be populated, supply the NBT tag
         if (definition instanceof Populateable populateable) {
@@ -64,7 +66,9 @@ public class ItemUtil {
         // Set item meta values
         ItemMeta meta = stack.getItemMeta();
 
-        meta.setDisplayName(ChatColor.RESET + "" + definition.rarity.colour + definition.name);
+        boolean boldName = (definition.rarity == Rarity.LEGENDARY || definition.rarity == Rarity.DEVELOPER);
+        meta.setDisplayName(ChatColor.RESET +""+ definition.rarity.colour + (boldName ? ChatColor.BOLD : "") + definition.name);
+
         meta.setLore(BuildLore(definition));
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -79,7 +83,7 @@ public class ItemUtil {
     }
 
     /**
-     * Returns the tooltip ("lore") of the specified ItemStack, assuming it is a custom item.
+     * Generates the tooltip ("lore") of the specified ItemStack, assuming it is a custom item.
      *
      * @param stack The ItemStack to get the tooltip from.
      * @return List of strings containing the tooltip.
@@ -90,7 +94,7 @@ public class ItemUtil {
     }
 
     /**
-     * Returns the tooltip ("lore") of the specified item definition.
+     * Generates the tooltip ("lore") of the specified item definition.
      *
      * @param def The item definition to get the tooltip from.
      * @return List of strings containing the tooltip.
@@ -101,13 +105,27 @@ public class ItemUtil {
         // If the definition is a weapon, add the damage
         if (def instanceof MeleeWeaponDefinition weapon) {
             lore.add("");
-            lore.add(ChatColor.RED + Icons.DamageIcon + " Damage: " + weapon.damage);
+            lore.add(ChatColor.WHITE + Icons.DamageIcon + " Damage: " + weapon.damage);
         }
 
-        // If the definition is armour, add the armour value
-        if (def instanceof ArmourDefinition armour) {
+        // If the definition provides stats, display them
+        if (def instanceof StatProvider statProvider) {
             lore.add("");
-            lore.add(ChatColor.WHITE + Icons.DefenseIcon + " Defense: " + armour.defense);
+            if (statProvider.getHealth() > 0) {
+                lore.add(ChatColor.GREEN + Icons.HealthIcon + " +" + statProvider.getHealth() + " Health");
+            }
+            if (statProvider.getDefense() > 0) {
+                lore.add(ChatColor.WHITE + Icons.DefenseIcon + " +" + statProvider.getDefense() + " Defense");
+            }
+            if (statProvider.getStrength() > 0) {
+                lore.add(ChatColor.RED + Icons.StrengthIcon + " +" + statProvider.getStrength() + " Strength");
+            }
+            if (statProvider.getIntelligence() > 0) {
+                lore.add(ChatColor.BLUE + Icons.IntelligenceIcon + " +" + statProvider.getIntelligence() + " Intelligence");
+            }
+            if (statProvider.getFocus() > 0) {
+                lore.add(ChatColor.YELLOW + Icons.FocusIcon + " +" + statProvider.getFocus() + " Focus");
+            }
         }
 
         // If the item is useable, add the use description
@@ -151,12 +169,27 @@ public class ItemUtil {
     }
 
     /**
+     * Returns the item definition of the specified ItemStack, 'null' if the item is not a custom item.
+     * @param stack The ItemStack to get the item definition from.
+     * @return The item definition, 'null' if the item is not a custom item.
+     */
+    public static @Nullable ItemDefinition GetItemDefinition(ItemStack stack) {
+        if(!IsCustomItem(stack)) {
+            return null;
+        }
+        return ItemRegistry.Get(GetCustomId(stack));
+    }
+
+    /**
      * Returns whether the specified ItemStack is a custom item.
      *
      * @param stack The ItemStack to check.
      * @return Whether the specified ItemStack is a custom item.
      */
     public static boolean IsCustomItem(ItemStack stack) {
+        if(stack == null || stack.getType() == Material.AIR) {
+            return false;
+        }
         return !GetCustomId(stack).equals("");
     }
 

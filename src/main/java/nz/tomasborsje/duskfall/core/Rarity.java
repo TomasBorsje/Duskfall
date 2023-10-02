@@ -7,20 +7,20 @@ import org.bukkit.ChatColor;
  * Enum for the rarity of an item, containing colour and name.
  */
 public enum Rarity {
-    @SerializedName("TRASH")
+    @SerializedName("trash")
     TRASH("TRASH", ChatColor.GRAY),
-    @SerializedName("COMMON")
+    @SerializedName("common")
     COMMON("COMMON", ChatColor.WHITE),
-    @SerializedName("UNCOMMON")
+    @SerializedName("uncommon")
     UNCOMMON("UNCOMMON", ChatColor.GREEN),
-    @SerializedName("RARE")
+    @SerializedName("rare")
     RARE("RARE", ChatColor.BLUE),
-    @SerializedName("EPIC")
+    @SerializedName("epic")
     EPIC("EPIC", ChatColor.DARK_PURPLE),
-    @SerializedName("LEGENDARY")
+    @SerializedName("legendary")
     LEGENDARY("LEGENDARY", ChatColor.GOLD),
-    @SerializedName("DEVELOPER")
-    MYTHIC("DEVELOPER", ChatColor.RED);
+    @SerializedName("developer")
+    DEVELOPER("DEVELOPER", ChatColor.RED);
 
     public final String name;
     public final ChatColor colour;

@@ -26,6 +26,11 @@ public class ItemRegistry {
      * @return The item definition, null if not found.
      */
     public static ItemDefinition Get(String id) {
+        // Check the item exists first
+        if (!Contains(id)) {
+            Bukkit.getLogger().warning("Attempted to get item definition with id " + id + " but it does not exist!");
+            return null;
+        }
         return itemRegistry.get(id).clone();
     }
 
@@ -98,6 +103,9 @@ public class ItemRegistry {
         if (itemDefinition.type != null) {
             itemDefinition.type = itemDefinition.type.toUpperCase();
         }
+
+        // Ensure material is in uppercase
+        itemDefinition.material = itemDefinition.material.toUpperCase();
 
         // Register the item definition
         itemRegistry.put(itemDefinition.id, itemDefinition);

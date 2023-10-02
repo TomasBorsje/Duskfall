@@ -20,7 +20,7 @@ public class ItemDefinitionDeserializer implements JsonDeserializer<ItemDefiniti
         if (jsonObject.has("customClass")) {
             String customClassName = jsonObject.get("customClass").getAsString();
             try {
-                Class<?> customClass = Class.forName(customClassName);
+                Class<?> customClass = Class.forName("nz.tomasborsje.duskfall.definitions.custom."+customClassName);
                 return context.deserialize(json, customClass);
             } catch (ClassNotFoundException e) {
                 throw new JsonParseException("Unknown custom class: " + customClassName);
@@ -28,20 +28,21 @@ public class ItemDefinitionDeserializer implements JsonDeserializer<ItemDefiniti
         }
 
         // Otherwise, parse generic item definitions
-        String itemType = jsonObject.get("type").getAsString();
-        return switch (itemType) {
+        String definitionType = jsonObject.get("def").getAsString();
+        return switch (definitionType) {
             case "item" -> {
                 // Deserialize manually as base case
                 ItemDefinition itemDefinition = new ItemDefinition();
                 itemDefinition.id = jsonObject.get("id").getAsString();
                 itemDefinition.name = jsonObject.get("name").getAsString();
                 itemDefinition.material = jsonObject.get("material").getAsString();
+                itemDefinition.type = jsonObject.get("type").getAsString();
                 yield itemDefinition;
             }
-            case "armor" -> context.deserialize(json, ArmourDefinition.class);
-            case "weapon" -> context.deserialize(json, MeleeWeaponDefinition.class);
-            case "food" -> context.deserialize(json, HealthFoodDefinition.class);
-            default -> throw new JsonParseException("Unknown item type: " + itemType);
+            case "armour" -> context.deserialize(json, ArmourDefinition.class);
+            case "melee_weapon" -> context.deserialize(json, MeleeWeaponDefinition.class);
+            case "health_food" -> context.deserialize(json, HealthFoodDefinition.class);
+            default -> throw new JsonParseException("Unknown item definition: " + definitionType);
         };
     }
 }

@@ -1,20 +1,83 @@
 [
     {
-        "type": "weapon",
+        "def": "melee_weapon",
+        "type": "whacking stick",
         "id": "whacking_stick",
         "name": "Whacking Stick",
         "damage": 10,
-        "material": "STICK",
-        "rarity": "RARE"
+        "material": "stick",
+        "rarity": "rare"
     },
     {
+        "def": "health_food",
         "type": "food",
         "id": "one_sushi_katsu",
         "name": "One Sushi™ Katsu Bowl",
         "description": "A bowl of rice topped with fried katsu chicken and kewpie mayo.",
-        "material": "BOWL",
-        "rarity": "RARE",
+        "material": "bowl",
+        "rarity": "rare",
         "healAmount": 150,
         "consumable": true
+    },
+    {
+        "def": "armour",
+        "type": "helmet",
+        "id": "ranger_helmet",
+        "name": "Ranger Helmet",
+        "description": "A helmet worn by the rangers of the forest.",
+        "material": "leather_helmet",
+        "rarity": "legendary",
+        "defense": 100,
+        "focus": 15,
+        "health": 15
+    },
+    {
+        "def": "armour",
+        "type": "chestplate",
+        "id": "ranger_chestplate",
+        "name": "Ranger Chestplate",
+        "description": "A chestplate worn by the rangers of the forest.",
+        "material": "leather_chestplate",
+        "rarity": "legendary",
+        "defense": 100,
+        "focus": 15,
+        "health": 15
+    },
+    {
+        "def": "armour",
+        "type": "leggings",
+        "id": "ranger_leggings",
+        "name": "Ranger Leggings",
+        "description": "Leggings worn by the rangers of the forest.",
+        "material": "leather_leggings",
+        "rarity": "legendary",
+        "defense": 100,
+        "focus": 15,
+        "health": 15
+    },
+    {
+        "def": "armour",
+        "type": "boots",
+        "id": "ranger_boots",
+        "name": "Ranger Boots",
+        "description": "Boots worn by the rangers of the forest.",
+        "material": "leather_boots",
+        "rarity": "legendary",
+        "defense": 100,
+        "focus": 15,
+        "health": 15
+    },
+    {
+        "def": "melee_weapon",
+        "type": "sword",
+        "id": "sword_of_the_cosmos",
+        "name": "Sword of the Cosmos",
+        "description": "A sword forged from the cosmos.",
+        "material": "diamond_sword",
+        "rarity": "developer",
+        "damage": 1000,
+        "focus": 1000,
+        "strength": 1000,
+        "intelligence": 1000
     }
 ]

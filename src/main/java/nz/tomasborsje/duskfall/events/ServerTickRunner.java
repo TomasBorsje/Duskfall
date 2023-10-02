@@ -22,7 +22,7 @@ public class ServerTickRunner extends BukkitRunnable {
         }
 
         // Tick custom entities
-        EntityHandler.tick();
+        EntityHandler.Tick();
     }
 
     void initialise() {

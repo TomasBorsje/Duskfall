@@ -1,9 +1,7 @@
 package nz.tomasborsje.duskfall;
 
 import nz.tomasborsje.duskfall.commands.GiveItemCommand;
-import nz.tomasborsje.duskfall.events.ItemUseListener;
-import nz.tomasborsje.duskfall.events.ServerTickRunner;
-import nz.tomasborsje.duskfall.events.WorldLoadListener;
+import nz.tomasborsje.duskfall.events.*;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -59,6 +57,8 @@ public class Duskfall extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new WorldLoadListener(), this);
         pluginManager.registerEvents(new ItemUseListener(), this);
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new PlayerDisconnectListener(), this);
     }
 
     void registerCommands() {
