@@ -3,6 +3,7 @@ package nz.tomasborsje.duskfall;
 import nz.tomasborsje.duskfall.commands.GiveItemCommand;
 import nz.tomasborsje.duskfall.commands.SpawnEntityCommand;
 import nz.tomasborsje.duskfall.events.*;
+import nz.tomasborsje.duskfall.handlers.GlobalChatClient;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
 import nz.tomasborsje.duskfall.registries.MobRegistry;
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ public class Duskfall extends JavaPlugin {
     public static File dataFolder;
     /** Plugin reference. **/
     public static Plugin plugin;
+    public static GlobalChatClient globalChat;
     /** Tick runner that calls all custom tick events. **/
     ServerTickRunner serverTickRunner = new ServerTickRunner();
 
@@ -49,12 +51,19 @@ public class Duskfall extends JavaPlugin {
         registerCommands();
         registerEvents();
 
+        // Connect to global chat server
+        globalChat = new GlobalChatClient();
+        globalChat.connect();
+
         // Start server tick event
         serverTickRunner.runTaskTimer(plugin, 0, 1);
     }
 
     @Override
     public void onDisable() {
+        // Disable connection to global chat server
+        globalChat.closeConnection(0, "Duskfall server shutting down.");
+
         Bukkit.getLogger().info("Disabled Duskfall.");
     }
 
@@ -65,6 +74,7 @@ public class Duskfall extends JavaPlugin {
         pluginManager.registerEvents(new PlayerJoinListener(), plugin);
         pluginManager.registerEvents(new PlayerDisconnectListener(), plugin);
         pluginManager.registerEvents(new EntityHurtEntityListener(), plugin);
+        pluginManager.registerEvents(new ChatMessageListener(), plugin);
     }
 
     void registerCommands() {

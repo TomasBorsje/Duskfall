@@ -23,6 +23,9 @@ public class ServerTickRunner extends BukkitRunnable {
 
         // Tick custom entities
         EntityHandler.Tick();
+
+        // Tick chat
+        Duskfall.globalChat.tick();
     }
 
     void initialise() {
