@@ -1,4 +1,4 @@
-package nz.tomasborsje.duskfall.definitions;
+package nz.tomasborsje.duskfall.core;
 
 import org.bukkit.entity.Player;
 
@@ -10,7 +10,7 @@ public interface Usable {
      * Called when a player uses this item.
      * @param user The player that used this item.
      */
-    void onPlayerUse(Player user);
+    void onPlayerUse(MMOEntity user);
 
     /**
      * Gets the use description for this item.

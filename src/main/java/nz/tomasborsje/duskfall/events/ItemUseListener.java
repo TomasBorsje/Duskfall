@@ -1,7 +1,9 @@
 package nz.tomasborsje.duskfall.events;
 
+import nz.tomasborsje.duskfall.core.MMOPlayer;
 import nz.tomasborsje.duskfall.definitions.ItemDefinition;
-import nz.tomasborsje.duskfall.definitions.Usable;
+import nz.tomasborsje.duskfall.core.Usable;
+import nz.tomasborsje.duskfall.handlers.EntityHandler;
 import nz.tomasborsje.duskfall.util.ItemUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +23,7 @@ public class ItemUseListener implements Listener {
 
         // Get used item
         ItemStack usedStack = event.getItem();
+        MMOPlayer player = (MMOPlayer) EntityHandler.GetEntity(event.getPlayer());
 
         // If null or vanilla, ignore
         if(usedStack == null || usedStack.getType().isAir()) { return; }
@@ -31,7 +34,7 @@ public class ItemUseListener implements Listener {
 
         // If it's useable, use it
         if(usedItem instanceof Usable usableItem) {
-            usableItem.onPlayerUse(event.getPlayer());
+            usableItem.onPlayerUse(player);
             // If it's consumable, reduce stack size
             if(usableItem.isConsumedOnUse()) {
                 usedStack.setAmount(usedStack.getAmount() - 1);

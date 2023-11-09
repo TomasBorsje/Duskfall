@@ -1,6 +1,7 @@
 package nz.tomasborsje.duskfall.definitions;
 
 import com.google.gson.annotations.SerializedName;
+import nz.tomasborsje.duskfall.core.StatProvider;
 
 public class ArmourDefinition extends ItemDefinition implements StatProvider {
     @SerializedName("defense")

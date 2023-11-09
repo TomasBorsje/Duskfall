@@ -3,15 +3,16 @@ package nz.tomasborsje.duskfall.core;
 import net.md_5.bungee.api.chat.TextComponent;
 import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import nz.tomasborsje.duskfall.definitions.MeleeWeaponDefinition;
-import nz.tomasborsje.duskfall.definitions.StatProvider;
 import nz.tomasborsje.duskfall.util.Icons;
 import nz.tomasborsje.duskfall.util.ItemUtil;
 import nz.tomasborsje.duskfall.util.Stats;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
 
@@ -20,6 +21,7 @@ import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
  */
 public class MMOPlayer implements MMOEntity {
     private final Player bukkitPlayer;
+    private final List<BuffInstance> buffs = new ArrayList<>();
     private int level = 1;
     private int health;
     private int maxHealth;
@@ -78,8 +80,7 @@ public class MMOPlayer implements MMOEntity {
         if (ItemUtil.IsCustomItem(heldItem)) {
 
             ItemDefinition definition = ItemUtil.GetPopulatedDefinition(heldItem);
-            if (definition instanceof MeleeWeaponDefinition) {
-                StatProvider stats = (StatProvider) definition;
+            if (definition instanceof StatProvider stats) {
                 addStatsForItem(stats);
             }
         }
@@ -110,6 +111,13 @@ public class MMOPlayer implements MMOEntity {
     public void tick() {
         // Tick combat tracker
         ticksSinceCombat++;
+
+        // Tick buffs
+        for(BuffInstance buff : buffs) {
+            buff.tick();
+        }
+        // Remove expired buffs
+        buffs.removeIf(BuffInstance::isExpired);
 
         // Recalculate stats.
         recalculateStats();
@@ -193,7 +201,7 @@ public class MMOPlayer implements MMOEntity {
     }
 
     @Override
-    public int getCurrentDamage() {
+    public int getMeleeDamage() {
         // Get the player's held custom item
         ItemStack heldItem = bukkitPlayer.getEquipment().getItemInMainHand();
 
@@ -224,13 +232,14 @@ public class MMOPlayer implements MMOEntity {
         fillHealthAndMana();
     }
 
-    /**
-     * Add a buff to the player's buff list.
-     * @param buff The buff to add.
-     */
     @Override
-    public void addBuff(Buff buff) {
-        // TODO
+    public void addBuff(BuffInstance buffInstance) {
+        buffs.add(buffInstance);
+    }
+
+    @Override
+    public void removeBuff(BuffInstance buff) {
+        buffs.remove(buff);
     }
 
     /**
@@ -263,11 +272,6 @@ public class MMOPlayer implements MMOEntity {
     @Override
     public LivingEntity getBukkitEntity() {
         return bukkitPlayer;
-    }
-
-    @Override
-    public boolean isPlayer() {
-        return true;
     }
 
     @Override

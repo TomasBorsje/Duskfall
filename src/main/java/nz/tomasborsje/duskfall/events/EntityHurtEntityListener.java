@@ -2,7 +2,6 @@ package nz.tomasborsje.duskfall.events;
 
 import nz.tomasborsje.duskfall.core.MMOEntity;
 import nz.tomasborsje.duskfall.handlers.EntityHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -22,7 +21,7 @@ public class EntityHurtEntityListener implements Listener {
         if(attacker == null || defender == null) { return; }
 
         // Get the attacker's damage
-        int damage = attacker.getCurrentDamage();
+        int damage = attacker.getMeleeDamage();
 
         // Hurt the defender
         defender.hurt(attacker, damage);

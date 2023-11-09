@@ -1,7 +1,10 @@
 package nz.tomasborsje.duskfall.util;
 
 import net.minecraft.nbt.CompoundTag;
+import nz.tomasborsje.duskfall.core.Populateable;
 import nz.tomasborsje.duskfall.core.Rarity;
+import nz.tomasborsje.duskfall.core.StatProvider;
+import nz.tomasborsje.duskfall.core.Usable;
 import nz.tomasborsje.duskfall.definitions.*;
 import nz.tomasborsje.duskfall.registries.*;
 import org.bukkit.ChatColor;

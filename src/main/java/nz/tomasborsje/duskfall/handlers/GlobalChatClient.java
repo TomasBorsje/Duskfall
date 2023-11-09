@@ -20,7 +20,6 @@ public class GlobalChatClient extends WebSocketClient {
     public void sendGlobalMessage(GlobalMessageType type, String playerName, String message) {
         // Check we're connected
         if (!this.isOpen()) {
-            Bukkit.getLogger().warning("Not sending message; not connected to global chat server!");
             return;
         }
 

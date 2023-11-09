@@ -1,4 +1,4 @@
-package nz.tomasborsje.duskfall.definitions;
+package nz.tomasborsje.duskfall.core;
 
 /**
  * Interface for item definitions that provide stats.

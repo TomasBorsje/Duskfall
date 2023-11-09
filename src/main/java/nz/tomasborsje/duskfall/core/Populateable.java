@@ -1,4 +1,4 @@
-package nz.tomasborsje.duskfall.definitions;
+package nz.tomasborsje.duskfall.core;
 
 import net.minecraft.nbt.CompoundTag;
 

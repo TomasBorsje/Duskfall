@@ -10,7 +10,7 @@ public interface MMOEntity {
     /**
      * @return The entity's current melee damage. This is the current equipped weapon's damage for players.
      */
-    public int getCurrentDamage();
+    public int getMeleeDamage();
 
     /**
      * @return The name of the entity.
@@ -32,11 +32,6 @@ public interface MMOEntity {
      * Tick the entity.
      */
     void tick();
-
-    /**
-     * @return Whether the entity is a player.
-     */
-    boolean isPlayer();
 
     /**
      * @return The entity's current health.
@@ -62,12 +57,24 @@ public interface MMOEntity {
     void heal(int health);
 
     /**
+     * Adds a buff to the entity that will be ticked, etc.
+     * @param buff The buff to add.
+     */
+    void addBuff(BuffInstance buff);
+
+    /**
+     * Removes a buff from the entity.
+     * @param buff The buff to remove.
+     */
+    void removeBuff(BuffInstance buff);
+
+    /**
      * @return The entity's level.
      */
     int getLevel();
 
     /**
-     * Add a buff to the entity.
+     * @return Whether the entity is in combat or not.
      */
-    void addBuff(Buff buff);
+    boolean isInCombat();
 }

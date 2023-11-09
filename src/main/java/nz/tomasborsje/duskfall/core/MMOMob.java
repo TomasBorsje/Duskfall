@@ -1,9 +1,11 @@
 package nz.tomasborsje.duskfall.core;
 
 import nz.tomasborsje.duskfall.definitions.MobDefinition;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a non-player entity capable of combat.
@@ -11,6 +13,7 @@ import org.bukkit.entity.LivingEntity;
 public class MMOMob implements MMOEntity {
     private final MobDefinition definition;
     private final LivingEntity bukkitEntity;
+    private final List<BuffInstance> buffs = new ArrayList<>();
     private int health = 1;
     private int maxHealth = 1;
     private int level = 1;
@@ -24,6 +27,14 @@ public class MMOMob implements MMOEntity {
 
     @Override
     public void tick() {
+        // Tick buffs
+        for(BuffInstance buff : buffs) {
+            buff.tick();
+            // If the buff has expired, remove it
+            if(buff.remainingDuration <= 0) {
+                removeBuff(buff);
+            }
+        }
         updateNamePlate();
     }
 
@@ -55,8 +66,13 @@ public class MMOMob implements MMOEntity {
     }
 
     @Override
-    public void addBuff(Buff buff) {
+    public void addBuff(BuffInstance buffInstance) {
+        buffs.add(buffInstance);
+    }
 
+    @Override
+    public void removeBuff(BuffInstance buff) {
+        buffs.remove(buff);
     }
 
     /**
@@ -68,15 +84,10 @@ public class MMOMob implements MMOEntity {
         bukkitEntity.setHealth(0);
 
         // If killed by a player...
-        if(killer.isPlayer()) {
+        if(killer instanceof MMOPlayer player) {
             // TODO loot exp etc
-            killer.getBukkitEntity().sendMessage("You killed "+getEntityName()+"!");
+            player.getBukkitEntity().sendMessage("You killed "+getEntityName()+"!");
         }
-    }
-
-    @Override
-    public boolean isPlayer() {
-        return false;
     }
 
     @Override
@@ -95,7 +106,13 @@ public class MMOMob implements MMOEntity {
     }
 
     @Override
-    public int getCurrentDamage() {
+    public boolean isInCombat() {
+        // TODO: Check targeting status of underlying entity
+        return true;
+    }
+
+    @Override
+    public int getMeleeDamage() {
         return definition.damage;
     }
 
