@@ -6,6 +6,8 @@ import nz.tomasborsje.duskfall.core.MMOEntity;
 import nz.tomasborsje.duskfall.core.MMOPlayer;
 import nz.tomasborsje.duskfall.core.Usable;
 import org.bukkit.ChatColor;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * Represents a food item that can be used by a player to heal over time, outside of combat.
@@ -22,9 +24,10 @@ public class HealthFoodDefinition extends ItemDefinition implements Usable {
 
     @Override
     public void onPlayerUse(MMOEntity user) {
-        if(user instanceof MMOPlayer) {
-            user.getBukkitEntity().sendMessage("You ate some food for " + healAmount + " health!");
-            user.addBuff(new NoncombatHealthRegenBuff(user, 20*20, healAmount));
+        if(user instanceof MMOPlayer player) {
+            player.getBukkitEntity().sendMessage(ChatColor.GRAY+"You ate "+rarity.colour+name+ChatColor.GRAY+"!");
+            player.addBuff(new NoncombatHealthRegenBuff(user, 20*20, healAmount));
+            player.getBukkitEntity().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*20, 0));
         }
     }
 

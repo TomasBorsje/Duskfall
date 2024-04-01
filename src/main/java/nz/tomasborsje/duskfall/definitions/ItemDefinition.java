@@ -1,9 +1,60 @@
 package nz.tomasborsje.duskfall.definitions;
 
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.nbt.CompoundTag;
 import nz.tomasborsje.duskfall.core.Rarity;
+import nz.tomasborsje.duskfall.util.ItemUtil;
+import nz.tomasborsje.duskfall.util.NBTUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemDefinition implements Cloneable {
+
+    /**
+     * Creates a new ItemStack with the default properties of this item definition.
+     *
+     * @return The created ItemStack.
+     */
+    public ItemStack createDefaultStack() {
+        // Get the material of the itemstack
+        Material material = Material.getMaterial(this.material);
+        if (material == null) {
+            throw new IllegalArgumentException("Unknown material: " + this.material);
+        }
+
+        // Create new stack with the specified material
+        ItemStack stack = new ItemStack(material);
+
+        // Create NBT tag for the itemstack
+        CompoundTag nbt = new CompoundTag();
+        nbt.putString("id", this.id);
+
+        // Add the NBT tag to the itemstack
+        stack = NBTUtil.SetNBT(stack, nbt);
+
+        // Set item meta values
+        ItemMeta meta = stack.getItemMeta();
+
+        boolean boldName = (this.rarity == Rarity.LEGENDARY || this.rarity == Rarity.DEVELOPER);
+        assert meta != null;
+        meta.setDisplayName(ChatColor.RESET +""+ this.rarity.colour + (boldName ? ChatColor.BOLD : "") + this.name);
+
+        meta.setLore(ItemUtil.BuildLore(this));
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.addItemFlags(ItemFlag.HIDE_DYE);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        meta.addItemFlags(ItemFlag.HIDE_ARMOR_TRIM);
+
+        stack.setItemMeta(meta);
+
+        return stack;
+    }
+    
     /**
      * The ID of the item.
      */
@@ -39,6 +90,13 @@ public class ItemDefinition implements Cloneable {
      */
     @SerializedName("rarity")
     public Rarity rarity = Rarity.COMMON;
+
+    /**
+     * @return The display name of the item, including the rarity colour.
+     */
+    public String getDisplayName() {
+        return rarity.colour+name;
+    }
 
     @Override
     public ItemDefinition clone() {

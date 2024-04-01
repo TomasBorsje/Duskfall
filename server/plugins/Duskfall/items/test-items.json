@@ -81,5 +81,16 @@
         "intelligence": 1000,
         "health": 1000,
         "mana": 1000
+    },
+    {
+        "def": "lockbox",
+        "type": "lockbox",
+        "id": "copper_lockbox",
+        "name": "Copper Lockbox",
+        "description": "A small copper lockbox. You can hear things jingling inside.",
+        "material": "chest",
+        "rarity": "uncommon",
+        "lootTable": "copper_lockbox",
+        "borderItem": "copper_ingot"
     }
 ]

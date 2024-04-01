@@ -30,8 +30,13 @@ public class GiveItemCommand implements CommandExecutor {
             // Get definition
             ItemDefinition definition = ItemRegistry.Get(itemId);
 
+            if(definition == null) {
+                player.sendMessage(ChatColor.RED+"No item registered with ID "+itemId);
+                return true;
+            }
+
             // Create stack
-            ItemStack stack = ItemUtil.CreateDefaultStack(definition);
+            ItemStack stack = definition.createDefaultStack();
 
             // Add item to player's inventory
             stack.setAmount(count);

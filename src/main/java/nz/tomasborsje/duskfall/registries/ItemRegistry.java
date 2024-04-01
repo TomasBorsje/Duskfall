@@ -21,6 +21,18 @@ public class ItemRegistry {
     private static final HashMap<String, ItemDefinition> itemRegistry = new HashMap<>();
 
     /**
+     * Returns a random item definition from the registry.
+     * Note: THIS IS A TESTING METHOD AND SHOULD NOT BE USED IN PRODUCTION CODE.
+     * @return A random item definition.
+     */
+    @Deprecated
+    public static ItemDefinition GetRandomItem() {
+        int num = (int) (Math.random() * itemRegistry.size());
+        for (ItemDefinition t : itemRegistry.values()) if (--num < 0) return t;
+        throw new AssertionError();
+    }
+
+    /**
      * Gets an item definition from the registry. Note that this is a clone, so can safely be modified.
      * @param id The ID of the item definition.
      * @return The item definition, null if not found.

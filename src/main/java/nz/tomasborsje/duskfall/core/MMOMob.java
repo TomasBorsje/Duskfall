@@ -2,10 +2,13 @@ package nz.tomasborsje.duskfall.core;
 
 import nz.tomasborsje.duskfall.definitions.MobDefinition;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH;
 
 /**
  * Represents a non-player entity capable of combat.
@@ -36,6 +39,8 @@ public class MMOMob implements MMOEntity {
             }
         }
         updateNamePlate();
+        // Set vanilla health to full to prevent the entity from dying
+        bukkitEntity.setHealth(bukkitEntity.getAttribute(GENERIC_MAX_HEALTH).getValue());
     }
 
     /**

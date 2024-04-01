@@ -1,7 +1,7 @@
 package nz.tomasborsje.duskfall.util;
 
 import net.minecraft.nbt.CompoundTag;
-import org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 public class NBTUtil {

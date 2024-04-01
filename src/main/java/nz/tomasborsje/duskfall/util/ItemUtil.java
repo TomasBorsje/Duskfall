@@ -9,7 +9,7 @@ import nz.tomasborsje.duskfall.definitions.*;
 import nz.tomasborsje.duskfall.registries.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -44,44 +44,16 @@ public class ItemUtil {
     }
 
     /**
-     * Creates a new ItemStack with the default properties of the specified item definition.
-     *
-     * @param definition The item definition to create the ItemStack from.
+     * Creates a new vanilla ItemStack with the given name.
+     * @param material The material of the ItemStack.
+     * @param name The name of the ItemStack.
      * @return The created ItemStack.
      */
-    public static ItemStack CreateDefaultStack(ItemDefinition definition) {
-        // Get the material of the itemstack
-        Material material = Material.getMaterial(definition.material);
-        if (material == null) {
-            throw new IllegalArgumentException("Unknown material: " + definition.material);
-        }
-
-        // Create new stack with the specified material
+    public static ItemStack VanillaStackWithName(Material material, String name) {
         ItemStack stack = new ItemStack(material);
-
-        // Create NBT tag for the itemstack
-        CompoundTag nbt = new CompoundTag();
-        nbt.putString("id", definition.id);
-
-        // Add the NBT tag to the itemstack
-        stack = NBTUtil.SetNBT(stack, nbt);
-
-        // Set item meta values
         ItemMeta meta = stack.getItemMeta();
-
-        boolean boldName = (definition.rarity == Rarity.LEGENDARY || definition.rarity == Rarity.DEVELOPER);
-        meta.setDisplayName(ChatColor.RESET +""+ definition.rarity.colour + (boldName ? ChatColor.BOLD : "") + definition.name);
-
-        meta.setLore(BuildLore(definition));
-        meta.setUnbreakable(true);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        meta.addItemFlags(ItemFlag.HIDE_DYE);
-        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-        meta.addItemFlags(ItemFlag.HIDE_ARMOR_TRIM);
-
+        meta.setDisplayName(name);
         stack.setItemMeta(meta);
-
         return stack;
     }
 

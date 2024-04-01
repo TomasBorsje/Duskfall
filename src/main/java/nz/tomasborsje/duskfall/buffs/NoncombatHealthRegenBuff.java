@@ -20,10 +20,12 @@ public class NoncombatHealthRegenBuff extends BuffInstance {
     public void tick() {
         super.tick();
         // Calculate the total healing (integer part)
-        int totalHealing = (int) healPerTick + (int) fractionalHealing;
+        int totalHealing = (int)(healPerTick + fractionalHealing);
 
         // Apply the integer part of healing to the entity's health
-        entity.heal(totalHealing);
+        if(totalHealing > 0) {
+            entity.heal(totalHealing);
+        }
 
         // Update fractional healing with the remaining decimal part
         fractionalHealing = (fractionalHealing + healPerTick) % 1.0f;
@@ -31,7 +33,7 @@ public class NoncombatHealthRegenBuff extends BuffInstance {
 
     @Override
     public boolean isExpired() {
-        // Remove if we are in combat too
-        return super.isExpired() || entity.isInCombat();
+        // Remove if we are in combat or if the player is max health
+        return super.isExpired() || entity.isInCombat() || entity.getHealth() >= entity.getMaxHealth();
     }
 }

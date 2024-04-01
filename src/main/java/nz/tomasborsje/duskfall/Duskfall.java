@@ -1,6 +1,7 @@
 package nz.tomasborsje.duskfall;
 
 import nz.tomasborsje.duskfall.commands.GiveItemCommand;
+import nz.tomasborsje.duskfall.commands.PrintNbtCommand;
 import nz.tomasborsje.duskfall.commands.SpawnEntityCommand;
 import nz.tomasborsje.duskfall.events.*;
 import nz.tomasborsje.duskfall.handlers.GlobalChatClient;
@@ -75,11 +76,15 @@ public class Duskfall extends JavaPlugin {
         pluginManager.registerEvents(new PlayerDisconnectListener(), plugin);
         pluginManager.registerEvents(new EntityHurtEntityListener(), plugin);
         pluginManager.registerEvents(new ChatMessageListener(), plugin);
+        pluginManager.registerEvents(new BlockBreakListener(), plugin);
+        pluginManager.registerEvents(new InventoryClickListener(), plugin);
+        pluginManager.registerEvents(new InventoryCloseListener(), plugin);
     }
 
     void registerCommands() {
         getCommand("giveitem").setExecutor(new GiveItemCommand());
         getCommand("spawnentity").setExecutor(new SpawnEntityCommand());
+        getCommand("printnbt").setExecutor(new PrintNbtCommand());
         Bukkit.getLogger().info("Registered commands.");
     }
 }

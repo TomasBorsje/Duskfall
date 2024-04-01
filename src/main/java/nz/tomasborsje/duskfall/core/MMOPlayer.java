@@ -1,12 +1,17 @@
 package nz.tomasborsje.duskfall.core;
 
 import net.md_5.bungee.api.chat.TextComponent;
+import nz.tomasborsje.duskfall.definitions.ArmourDefinition;
 import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import nz.tomasborsje.duskfall.definitions.MeleeWeaponDefinition;
+import nz.tomasborsje.duskfall.ui.screens.PlayerScreen;
+import nz.tomasborsje.duskfall.ui.screens.ScreenManager;
 import nz.tomasborsje.duskfall.util.Icons;
 import nz.tomasborsje.duskfall.util.ItemUtil;
+import nz.tomasborsje.duskfall.util.MathUtil;
 import nz.tomasborsje.duskfall.util.Stats;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +26,8 @@ import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
  */
 public class MMOPlayer implements MMOEntity {
     private final Player bukkitPlayer;
+    public final ScreenManager ui;
+    public final InventoryManager inventory;
     private final List<BuffInstance> buffs = new ArrayList<>();
     private int level = 1;
     private int health;
@@ -40,6 +47,8 @@ public class MMOPlayer implements MMOEntity {
      */
     public MMOPlayer(Player player) {
         bukkitPlayer = player;
+        ui = new ScreenManager(this);
+        inventory = new InventoryManager(this);
         ticksSinceCombat = 250; // Out of combat
         recalculateStats();
         fillHealthAndMana();
@@ -80,7 +89,7 @@ public class MMOPlayer implements MMOEntity {
         if (ItemUtil.IsCustomItem(heldItem)) {
 
             ItemDefinition definition = ItemUtil.GetPopulatedDefinition(heldItem);
-            if (definition instanceof StatProvider stats) {
+            if (definition instanceof StatProvider stats && !(definition instanceof ArmourDefinition)) {
                 addStatsForItem(stats);
             }
         }
@@ -127,6 +136,11 @@ public class MMOPlayer implements MMOEntity {
 
         // Display action bar
         displayActionBarInfo();
+
+        // Set vanilla health to be a representation of the MMO health (+0.1 to ensure we never die on MC's side)
+        bukkitPlayer.setHealth(MathUtil.clamp((double)health / (double)maxHealth * 20.0, 0.1, 20.0));
+        // Set food level to max
+        bukkitPlayer.setFoodLevel(20);
     }
 
     /**
@@ -270,7 +284,7 @@ public class MMOPlayer implements MMOEntity {
     }
 
     @Override
-    public LivingEntity getBukkitEntity() {
+    public Player getBukkitEntity() {
         return bukkitPlayer;
     }
 

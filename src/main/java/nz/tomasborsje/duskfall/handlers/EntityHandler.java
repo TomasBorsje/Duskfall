@@ -4,11 +4,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import nz.tomasborsje.duskfall.core.MMOEntity;
 import nz.tomasborsje.duskfall.core.MMOMob;
+import nz.tomasborsje.duskfall.core.MMOPlayer;
 import nz.tomasborsje.duskfall.core.NMSMob;
 import nz.tomasborsje.duskfall.definitions.MobDefinition;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R3.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 
 import javax.annotation.Nullable;
@@ -30,6 +31,15 @@ public class EntityHandler {
      */
     public static @Nullable MMOEntity GetEntity(org.bukkit.entity.Entity entity) {
         return entities.get(entity.getEntityId());
+    }
+
+    /**
+     * Get a player by their Bukkit entity. This is a convenience method for GetEntity.
+     * @param entity The Bukkit entity.
+     * @return The MMOPlayer.
+     */
+    public static @Nullable MMOPlayer GetPlayer(org.bukkit.entity.Entity entity) {
+        return (MMOPlayer) entities.get(entity.getEntityId());
     }
 
     /**
