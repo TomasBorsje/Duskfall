@@ -9,6 +9,15 @@
         "rarity": "rare"
     },
     {
+        "def": "melee_weapon",
+        "type": "dagger",
+        "id": "citrine_dagger",
+        "name": "Citrine Dagger",
+        "damage": 23,
+        "material": "iron_sword",
+        "rarity": "legendary"
+    },
+    {
         "def": "health_food",
         "type": "food",
         "id": "one_sushi_katsu",
@@ -17,6 +26,17 @@
         "material": "bowl",
         "rarity": "rare",
         "healAmount": 150,
+        "consumable": true
+    },
+    {
+        "def": "health_food",
+        "type": "food",
+        "id": "miss_kangsta_katsu",
+        "name": "Miss Kangsta™ Chicken Mayo",
+        "description": "A bowl of rice and fried chicken pieces topped with an egg.",
+        "material": "bowl",
+        "rarity": "epic",
+        "healAmount": 300,
         "consumable": true
     },
     {
@@ -92,5 +112,14 @@
         "rarity": "uncommon",
         "lootTable": "copper_lockbox",
         "borderItem": "copper_ingot"
+    },
+    {
+        "customClass": "WandOfSparkingDefinition",
+        "type": "wand",
+        "id": "wand_of_sparking",
+        "name": "Wand of Sparking",
+        "description": "A small, smoldering wand.",
+        "material": "bow",
+        "rarity": "uncommon"
     }
 ]

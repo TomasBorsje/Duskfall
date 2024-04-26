@@ -3,10 +3,12 @@ package nz.tomasborsje.duskfall;
 import nz.tomasborsje.duskfall.commands.GiveItemCommand;
 import nz.tomasborsje.duskfall.commands.PrintNbtCommand;
 import nz.tomasborsje.duskfall.commands.SpawnEntityCommand;
+import nz.tomasborsje.duskfall.commands.TryCraftCommand;
 import nz.tomasborsje.duskfall.events.*;
 import nz.tomasborsje.duskfall.handlers.GlobalChatClient;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
 import nz.tomasborsje.duskfall.registries.MobRegistry;
+import nz.tomasborsje.duskfall.registries.RecipeRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -48,6 +50,9 @@ public class Duskfall extends JavaPlugin {
         // Load mobs
         MobRegistry.LoadMobDefinitions(dataFolder);
 
+        // Load recipes
+        RecipeRegistry.LoadCustomRecipes(dataFolder);
+
         // Register commands and event listeners
         registerCommands();
         registerEvents();
@@ -85,6 +90,7 @@ public class Duskfall extends JavaPlugin {
         getCommand("giveitem").setExecutor(new GiveItemCommand());
         getCommand("spawnentity").setExecutor(new SpawnEntityCommand());
         getCommand("printnbt").setExecutor(new PrintNbtCommand());
+        getCommand("trycraft").setExecutor(new TryCraftCommand());
         Bukkit.getLogger().info("Registered commands.");
     }
 }

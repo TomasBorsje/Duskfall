@@ -18,3 +18,7 @@ commands:
     description: Displays NBT data of the item in the executor's hand.
     usage: /<command>
     permission: duskfall.admin
+  trycraft:
+    description: Attempts to craft a custom recipe with the given ID.
+    usage: /<command> <id>
+    permission: duskfall.admin

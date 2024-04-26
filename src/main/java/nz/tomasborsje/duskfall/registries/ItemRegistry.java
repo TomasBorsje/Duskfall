@@ -8,7 +8,10 @@ import org.bukkit.Bukkit;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Singleton class that provides access to the item registry.
@@ -46,6 +49,14 @@ public class ItemRegistry {
         return itemRegistry.get(id).clone();
     }
 
+    /**
+     * Gets all item definitions from the registry.
+     * @return An unmodifiable collection of all item definitions.
+     */
+    public static Collection<ItemDefinition> GetAllItems() {
+        return Collections.unmodifiableCollection(itemRegistry.values());
+    }
+
     public static boolean Contains(String id) {
         return itemRegistry.containsKey(id);
     }
@@ -55,13 +66,13 @@ public class ItemRegistry {
      * @param dataFolder The plugin's data folder.
      */
     public static void LoadItemDefinitions(File dataFolder) {
-        Bukkit.getLogger().info("Loading item schema from " + dataFolder.getAbsolutePath());
+        //Bukkit.getLogger().info("Loading item schema from " + dataFolder.getAbsolutePath());
 
         // Get the /items subfolder
         File itemsFolder = new File(dataFolder, "items");
         if (!itemsFolder.exists()) {
             if(!itemsFolder.mkdir()) {
-                Bukkit.getLogger().warning("Failed to create /items subfolder!");
+                //Bukkit.getLogger().warning("Failed to create /items subfolder!");
             }
         }
 
@@ -81,7 +92,7 @@ public class ItemRegistry {
 
             // Parse a list of item definitions
             ItemDefinition[] itemDefinitions = gson.fromJson(json, ItemDefinition[].class);
-            Bukkit.getLogger().info("Loading " + itemDefinitions.length + " item definitions from " + itemFile.getName());
+            //Bukkit.getLogger().info("Loading " + itemDefinitions.length + " item definitions from " + itemFile.getName());
 
             // Register each item definition in this file
             for (ItemDefinition itemDefinition : itemDefinitions) {
@@ -90,7 +101,7 @@ public class ItemRegistry {
         }
 
         // Print total loaded definitions
-        Bukkit.getLogger().info("Finished loading items. Loaded a total of " + itemRegistry.size() + " item definitions.");
+        //Bukkit.getLogger().info("Finished loading item definitions. Loaded a total of " + itemRegistry.size() + " item definitions.");
     }
 
     /**

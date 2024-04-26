@@ -32,6 +32,7 @@ public class ItemDefinition implements Cloneable {
         CompoundTag nbt = new CompoundTag();
         nbt.putString("id", this.id);
 
+
         // Add the NBT tag to the itemstack
         stack = NBTUtil.SetNBT(stack, nbt);
 
@@ -40,6 +41,13 @@ public class ItemDefinition implements Cloneable {
 
         boolean boldName = (this.rarity == Rarity.LEGENDARY || this.rarity == Rarity.DEVELOPER);
         assert meta != null;
+
+        // Set custom display ID to the hashcode of its lowercase ID
+        // We have to clamp the range, see https://bugs.mojang.com/browse/MC-138426
+        meta.setCustomModelData((int)((float)(this.id.toLowerCase().hashCode() % 1_000_000)));
+        // Log the custom model data
+        System.out.println("Custom model data for " + this.id + " is " + meta.getCustomModelData());
+
         meta.setDisplayName(ChatColor.RESET +""+ this.rarity.colour + (boldName ? ChatColor.BOLD : "") + this.name);
 
         meta.setLore(ItemUtil.BuildLore(this));

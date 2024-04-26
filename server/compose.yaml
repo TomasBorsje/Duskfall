@@ -1,0 +1,6 @@
+services:
+   duskfall-server:
+    build:
+      context: .
+    ports:
+      - 25565:25565

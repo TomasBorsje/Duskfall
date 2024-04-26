@@ -2,6 +2,7 @@ package nz.tomasborsje.duskfall.events;
 
 import nz.tomasborsje.duskfall.Duskfall;
 import nz.tomasborsje.duskfall.handlers.EntityHandler;
+import nz.tomasborsje.duskfall.handlers.ProjectileHandler;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -23,6 +24,9 @@ public class ServerTickRunner extends BukkitRunnable {
 
         // Tick custom entities
         EntityHandler.Tick();
+
+        // Tick custom projectiles
+        ProjectileHandler.Tick();
 
         // Tick chat
         Duskfall.globalChat.tick();

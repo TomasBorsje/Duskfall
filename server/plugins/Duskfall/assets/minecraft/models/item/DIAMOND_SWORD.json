@@ -1,0 +1,9 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/diamond_sword"
+  },
+  "overrides": [
+    {"predicate": {"custom_model_data": 24798}, "model": "duskfall:item/sword_of_the_cosmos"}
+  ]
+}

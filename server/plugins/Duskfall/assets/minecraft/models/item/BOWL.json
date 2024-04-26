@@ -1,0 +1,10 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/bowl"
+  },
+  "overrides": [
+    {"predicate": {"custom_model_data": -531206}, "model": "duskfall:item/one_sushi_katsu"},
+    {"predicate": {"custom_model_data": -257297}, "model": "duskfall:item/miss_kangsta_katsu"}
+  ]
+}

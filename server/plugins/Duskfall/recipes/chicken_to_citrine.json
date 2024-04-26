@@ -1,0 +1,14 @@
+[
+  {
+    "recipeId": "chicken_to_citrine",
+    "resultItemId": "citrine_dagger",
+    "ingredients": [
+      {
+        "itemId": "miss_kangsta_katsu"
+      },
+      {
+        "itemId": "one_sushi_katsu"
+      }
+    ]
+  }
+]
