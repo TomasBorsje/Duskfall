@@ -104,7 +104,6 @@ public class EntityHandler {
      * @param loc The location to spawn the mob at.
      */
     public static void SpawnMob(MobDefinition definition, Location loc) {
-
         // Spawn mob by classname
         String className = "nz.tomasborsje.duskfall.definitions.mobs." + definition.classname;
         Entity nmsEntity;
@@ -118,20 +117,18 @@ public class EntityHandler {
 
                 // If living entity, add extra values
                 if(nmsEntity instanceof net.minecraft.world.entity.LivingEntity livingEntity) {
-                    // Add infinite fire resist effect without particles
-                    livingEntity.addEffect(new MobEffectInstance(net.minecraft.world.effect.MobEffects.FIRE_RESISTANCE, -1, 0, false, false));
-
                     // If size multiplier is set, add it
                     if(definition.sizeMultiplier != 1.0f) {
                         livingEntity.getAttribute(Attributes.SCALE).addPermanentModifier(new AttributeModifier("SizeMultiplier", definition.sizeMultiplier - 1.0f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
                     }
                 }
+
                 // Add to level
                 Level level = ((CraftWorld) loc.getWorld()).getHandle();
                 level.addFreshEntity(nmsEntity);
             }
             else {
-                throw new RuntimeException("Mob class " + className + " does not implement NMSMob");
+                throw new RuntimeException("Mob class " + className + " does not implement NMSMob!");
             }
         } catch (Exception e) {
             throw new RuntimeException("Exception during mob spawning: " + e);

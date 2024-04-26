@@ -85,6 +85,7 @@ public class Duskfall extends JavaPlugin {
         pluginManager.registerEvents(new BlockBreakListener(), plugin);
         pluginManager.registerEvents(new InventoryClickListener(), plugin);
         pluginManager.registerEvents(new InventoryCloseListener(), plugin);
+        pluginManager.registerEvents(new EntityCombustListener(), plugin);
     }
 
     void registerCommands() {

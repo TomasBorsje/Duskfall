@@ -13,8 +13,6 @@ public class InventoryClickListener implements Listener {
         if(player == null) { return; }
         if(event.getSlot() == -999) { return; } // Only register item slot clicks
 
-        player.getBukkitEntity().sendMessage("Clicked slot " + event.getSlot());
-
         // Check if this is a custom inventory
         if(player.ui.isScreenOpen() && event.getClickedInventory() != null && event.getClickedInventory().getHolder() == null) {
             // If so, call the click event
