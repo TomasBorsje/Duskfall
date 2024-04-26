@@ -70,7 +70,7 @@ public class BaseProjectile implements MMOProjectile {
         // If owner is not null, show them particles
         if (owner != null && owner.getBukkitEntity() instanceof Player bukkitPlayer) {
             // Spawn flame particles at the projectile's pos
-            bukkitPlayer.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, position.getX(), position.getY(), position.getZ(), 1, 0, 0, 0, 0);
+            bukkitPlayer.getWorld().spawnParticle(Particle.FIREWORK, position.getX(), position.getY(), position.getZ(), 1, 0, 0, 0, 0);
         }
     }
 

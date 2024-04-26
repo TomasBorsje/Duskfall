@@ -11,11 +11,15 @@ public class MobDefinition implements Cloneable {
 
     @SerializedName("name")
     public String name;
+
     @SerializedName("damage")
     public int damage = 1;
 
     @SerializedName("health")
     public int maxHealth = 1;
+
+    @SerializedName("sizeMultiplier")
+    public float sizeMultiplier = 1.0f;
 
     @Override
     public MobDefinition clone() {

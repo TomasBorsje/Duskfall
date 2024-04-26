@@ -1,7 +1,15 @@
 package nz.tomasborsje.duskfall.util;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapDecoder;
+import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.component.CustomData;
+import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 public class NBTUtil {
@@ -12,7 +20,9 @@ public class NBTUtil {
      */
     public static ItemStack SetNBT(ItemStack stack, CompoundTag nbt) {
         net.minecraft.world.item.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
-        nmsStack.setTag(nbt);
+
+        nmsStack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
+
         return CraftItemStack.asBukkitCopy(nmsStack);
     }
 
@@ -23,6 +33,6 @@ public class NBTUtil {
      */
     public static CompoundTag GetNBT(ItemStack stack) {
         net.minecraft.world.item.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
-        return nmsStack.getTag();
+        return nmsStack.get(DataComponents.CUSTOM_DATA).getUnsafe();
     }
 }

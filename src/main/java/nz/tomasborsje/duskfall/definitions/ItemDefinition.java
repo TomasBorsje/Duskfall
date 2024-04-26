@@ -32,7 +32,6 @@ public class ItemDefinition implements Cloneable {
         CompoundTag nbt = new CompoundTag();
         nbt.putString("id", this.id);
 
-
         // Add the NBT tag to the itemstack
         stack = NBTUtil.SetNBT(stack, nbt);
 
@@ -55,7 +54,6 @@ public class ItemDefinition implements Cloneable {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.addItemFlags(ItemFlag.HIDE_DYE);
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         meta.addItemFlags(ItemFlag.HIDE_ARMOR_TRIM);
 
         stack.setItemMeta(meta);

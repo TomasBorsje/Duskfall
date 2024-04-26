@@ -4,6 +4,7 @@
         "name": "Basic Zombie",
         "classname": "BasicZombie",
         "damage": 5,
-        "health": 100
+        "health": 100,
+        "sizeMultiplier": 0.2
     }
 ]

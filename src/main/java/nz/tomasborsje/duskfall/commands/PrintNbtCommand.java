@@ -1,5 +1,6 @@
 package nz.tomasborsje.duskfall.commands;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
@@ -7,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,7 +33,7 @@ public class PrintNbtCommand implements CommandExecutor {
         }
 
         // Get ItemStack's NBT
-        CompoundTag nmsStack = CraftItemStack.asNMSCopy(heldItem).getOrCreateTag();
+        CompoundTag nmsStack = CraftItemStack.asNMSCopy(heldItem).get(DataComponents.CUSTOM_DATA).getUnsafe();
 
         // Print out each NBT tag value and type in the chat
         player.sendMessage(ChatColor.GREEN + "NBT tags for held item:");

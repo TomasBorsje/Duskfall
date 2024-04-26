@@ -1,6 +1,9 @@
 package nz.tomasborsje.duskfall.handlers;
 
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import nz.tomasborsje.duskfall.core.MMOEntity;
 import nz.tomasborsje.duskfall.core.MMOMob;
@@ -9,7 +12,7 @@ import nz.tomasborsje.duskfall.core.NMSMob;
 import nz.tomasborsje.duskfall.definitions.MobDefinition;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_20_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 
 import javax.annotation.Nullable;
@@ -112,6 +115,17 @@ public class EntityHandler {
                 nmsEntity = (Entity)mob;
                 nmsEntity.setPos(loc.getX(), loc.getY(), loc.getZ()); // Set location
                 nmsEntity.setCustomNameVisible(true);
+
+                // If living entity, add extra values
+                if(nmsEntity instanceof net.minecraft.world.entity.LivingEntity livingEntity) {
+                    // Add infinite fire resist effect without particles
+                    livingEntity.addEffect(new MobEffectInstance(net.minecraft.world.effect.MobEffects.FIRE_RESISTANCE, -1, 0, false, false));
+
+                    // If size multiplier is set, add it
+                    if(definition.sizeMultiplier != 1.0f) {
+                        livingEntity.getAttribute(Attributes.SCALE).addPermanentModifier(new AttributeModifier("SizeMultiplier", definition.sizeMultiplier - 1.0f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                    }
+                }
                 // Add to level
                 Level level = ((CraftWorld) loc.getWorld()).getHandle();
                 level.addFreshEntity(nmsEntity);

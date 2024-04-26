@@ -1,6 +1,9 @@
 package nz.tomasborsje.duskfall.util;
 
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
 import nz.tomasborsje.duskfall.core.Populateable;
 import nz.tomasborsje.duskfall.core.Rarity;
 import nz.tomasborsje.duskfall.core.StatProvider;
@@ -9,7 +12,7 @@ import nz.tomasborsje.duskfall.definitions.*;
 import nz.tomasborsje.duskfall.registries.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -134,13 +137,14 @@ public class ItemUtil {
      * @return The custom ID, "" if the item is not a custom item.
      */
     public static String GetCustomId(ItemStack stack) {
-        CompoundTag nbt = CraftItemStack.asNMSCopy(stack).getTag();
+        CustomData customData = CraftItemStack.asNMSCopy(stack).get(DataComponents.CUSTOM_DATA);
 
-        if (nbt == null) {
+
+        if (customData == null) {
             return "";
         }
 
-        return nbt.getString("id");
+        return customData.getUnsafe().getString("id");
     }
 
     /**
