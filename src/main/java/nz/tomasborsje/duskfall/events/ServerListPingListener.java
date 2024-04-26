@@ -1,6 +1,5 @@
 package nz.tomasborsje.duskfall.events;
 
-import nz.tomasborsje.duskfall.Duskfall;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -30,7 +29,7 @@ public class ServerListPingListener implements Listener {
         char[] chars = text.toCharArray(); // Get a list of all characters in text
         boolean isBold = false;
         double length = 0;
-        ChatColor pholder = null;
+        ChatColor pholder;
         for (int i = 0; i < chars.length; i++) { // Loop through all characters
             // Check if the character is a ColorCode..
             if (chars[i] == '&' && chars.length != (i + 1) && (pholder = ChatColor.getByChar(chars[i + 1])) != null) {
