@@ -1,0 +1,9 @@
+[
+    {
+        "id": "basic_zombie",
+        "name": "Basic Zombie",
+        "classname": "BasicZombie",
+        "damage": 5,
+        "health": 100
+    }
+]
