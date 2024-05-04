@@ -1,4 +1,4 @@
-# ![Duskfall Icon](https://github.com/TomasBorsje/Duskfall/blob/master/textures/citrine_dagger.png?raw=true) Duskfall
+# ![](https://github.com/TomasBorsje/Duskfall/blob/master/textures/citrine_dagger.png?raw=true) Duskfall
 
 Duskfall is an MMORPG built entirely on server-side Minecraft, using Spigot.
 
