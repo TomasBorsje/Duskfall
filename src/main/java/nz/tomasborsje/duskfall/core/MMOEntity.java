@@ -2,6 +2,8 @@ package nz.tomasborsje.duskfall.core;
 
 import org.bukkit.entity.LivingEntity;
 
+import javax.annotation.Nullable;
+
 /**
  * This is the in-world representation of both players and custom entities.
  */
@@ -19,9 +21,9 @@ public interface MMOEntity {
 
     /**
      * Kill the entity.
-     * @param killer The entity that killed this entity.
+     * @param killingBlow The damage instance that caused death.
      */
-    void kill(MMOEntity killer);
+    void kill(DamageInstance killingBlow);
 
     /**
      * @return The entity's Bukkit entity.
@@ -45,10 +47,9 @@ public interface MMOEntity {
 
     /**
      * Hurt an entity, taking into accounts its defense, buffs, etc.
-     * @param source The entity that is hurting this entity.
-     * @param damage The amount of damage to deal to the entity.
+     * @param damageInstance The damage instance to hurt the entity with
      */
-    void hurt(MMOEntity source, int damage);
+    void hurt(DamageInstance damageInstance);
 
     /**
      * Heal an entity, taking into accounts its buffs, etc.

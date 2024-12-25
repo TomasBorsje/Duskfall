@@ -51,13 +51,13 @@ public class MMOMob implements MMOEntity {
     }
 
     @Override
-    public void hurt(MMOEntity source, int damage) {
+    public void hurt(DamageInstance damageInstance) {
         if(health <= 0) { return; } // Can't hurt dead entities
-        health -= damage;
+        health -= damageInstance.getDamageAmount();
         if (health <= 0) {
             health = 0;
             updateNamePlate();
-            kill(source);
+            kill(damageInstance);
         }
     }
 
@@ -82,14 +82,14 @@ public class MMOMob implements MMOEntity {
 
     /**
      * Called when a mob dies to another attacker. If the killer is a player, they will receive experience and loot, etc.
-     * @param killer The entity that killed this entity.
+     * @param damageInstance The damage instance that killed this entity.
      */
     @Override
-    public void kill(MMOEntity killer) {
+    public void kill(DamageInstance damageInstance) {
         bukkitEntity.setHealth(0);
 
         // If killed by a player...
-        if(killer instanceof MMOPlayer player) {
+        if(damageInstance.getCause() == MMODamageCause.ENTITY && damageInstance.getAttacker() instanceof MMOPlayer player) {
             // TODO loot exp etc
             player.getBukkitEntity().sendMessage("You killed "+getEntityName()+"!");
         }

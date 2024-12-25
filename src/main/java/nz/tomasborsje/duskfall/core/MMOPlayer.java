@@ -40,6 +40,7 @@ public class MMOPlayer implements MMOEntity {
     private int intelligence = 0;
     private int regenTimer = 0;
     private int ticksSinceCombat = 0;
+    private MMOPlayer killer;
 
     /**
      * Creates a new MMOPlayer with the given Bukkit player.
@@ -174,16 +175,16 @@ public class MMOPlayer implements MMOEntity {
 
     /**
      * Hurt the player, taking into accounts their defense, buffs, etc.
-     * @param damage The amount of damage to deal to the entity.
+     * @param damageInstance The damage instance to hurt the player by.
      */
     @Override
-    public void hurt(MMOEntity source, int damage) {
+    public void hurt(DamageInstance damageInstance) {
         // TODO DEBUG: Use defense values, etc.
         markCombat();
-        health -= damage;
+        health -= damageInstance.getDamageAmount();
         // If health is below 0, kill the player
         if(health <= 0) {
-            kill(source);
+            kill(damageInstance);
         }
     }
 
@@ -239,10 +240,16 @@ public class MMOPlayer implements MMOEntity {
      * Kill the player, teleporting them to spawn and taking away some of their money, etc.
      */
     @Override
-    public void kill(MMOEntity killer) {
+    public void kill(DamageInstance damageInstance) {
         // TODO
         ticksSinceCombat = 1000; // Exit combat
-        bukkitPlayer.sendMessage(ChatColor.RED + "You died to " + killer.getEntityName() + "!");
+
+        if(damageInstance.getCause() == MMODamageCause.ENTITY) {
+            bukkitPlayer.sendMessage(ChatColor.RED + "You were killed by " + killer.getEntityName() + "!");
+        }
+        else {
+            bukkitPlayer.sendMessage(ChatColor.RED + "You died!");
+        }
         fillHealthAndMana();
     }
 

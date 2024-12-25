@@ -1,5 +1,8 @@
 package nz.tomasborsje.duskfall.events;
 
+import nz.tomasborsje.duskfall.core.DamageInstance;
+import nz.tomasborsje.duskfall.core.DamageType;
+import nz.tomasborsje.duskfall.core.MMODamageCause;
 import nz.tomasborsje.duskfall.core.MMOEntity;
 import nz.tomasborsje.duskfall.handlers.EntityHandler;
 import org.bukkit.event.EventHandler;
@@ -22,8 +25,9 @@ public class EntityHurtEntityListener implements Listener {
 
         // Get the attacker's damage
         int damage = attacker.getMeleeDamage();
+        DamageInstance instance = new DamageInstance(MMODamageCause.ENTITY, DamageType.PHYSICAL, attacker, damage);
 
         // Hurt the defender
-        defender.hurt(attacker, damage);
+        defender.hurt(instance);
     }
 }

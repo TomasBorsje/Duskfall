@@ -6,8 +6,7 @@ import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
-import nz.tomasborsje.duskfall.core.MMOEntity;
-import nz.tomasborsje.duskfall.core.MMOProjectile;
+import nz.tomasborsje.duskfall.core.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -18,6 +17,7 @@ import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
+// TODO: This should be abstract.
 public class BaseProjectile implements MMOProjectile {
     private final Vector position;
     private final Vector velocity;
@@ -78,7 +78,8 @@ public class BaseProjectile implements MMOProjectile {
     public void onHitEntity(MMOEntity hitEntity) {
         // If this is not our owner, deal damage
         if (owner != null && hitEntity != owner && isAlive()) {
-            hitEntity.hurt(owner, 15);
+            DamageInstance instance = new DamageInstance(MMODamageCause.ENTITY, DamageType.MAGIC, owner, 15);
+            hitEntity.hurt(instance);
             setKilled();
         }
     }
