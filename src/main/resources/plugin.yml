@@ -3,7 +3,7 @@ version: 0.0.1
 main: nz.tomasborsje.duskfall.Duskfall
 author: TomasBorsje
 website: https://github.com/TomasBorsje/Duskfall
-api-version: 1.20
+api-version: 1.21
 load: STARTUP
 commands:
   giveitem:

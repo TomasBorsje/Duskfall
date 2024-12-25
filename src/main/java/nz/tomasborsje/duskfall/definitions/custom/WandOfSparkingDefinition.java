@@ -5,7 +5,7 @@ import nz.tomasborsje.duskfall.core.MMOEntity;
 import nz.tomasborsje.duskfall.core.Usable;
 import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import nz.tomasborsje.duskfall.projectiles.BaseProjectile;
-import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R3.CraftWorld;
 import nz.tomasborsje.duskfall.handlers.ProjectileHandler;
 
 public class WandOfSparkingDefinition extends ItemDefinition implements Usable {

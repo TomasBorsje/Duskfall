@@ -1,5 +1,7 @@
 package nz.tomasborsje.duskfall.handlers;
 
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,7 +14,7 @@ import nz.tomasborsje.duskfall.core.NMSMob;
 import nz.tomasborsje.duskfall.definitions.MobDefinition;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R3.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 
 import javax.annotation.Nullable;
@@ -119,7 +121,7 @@ public class EntityHandler {
                 if(nmsEntity instanceof net.minecraft.world.entity.LivingEntity livingEntity) {
                     // If size multiplier is set, add it
                     if(definition.sizeMultiplier != 1.0f) {
-                        livingEntity.getAttribute(Attributes.SCALE).addPermanentModifier(new AttributeModifier("SizeMultiplier", definition.sizeMultiplier - 1.0f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                        livingEntity.getAttribute(Attributes.SCALE).addPermanentModifier(new AttributeModifier(ResourceLocation.fromNamespaceAndPath("minecraft", "scale"), definition.sizeMultiplier - 1.0f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
                     }
                 }
 

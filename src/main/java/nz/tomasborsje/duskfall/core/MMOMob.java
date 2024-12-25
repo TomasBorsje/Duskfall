@@ -8,7 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH;
+import static org.bukkit.attribute.Attribute.MAX_HEALTH;
 
 /**
  * Represents a non-player entity capable of combat.
@@ -40,7 +40,7 @@ public class MMOMob implements MMOEntity {
         }
         updateNamePlate();
         // Set vanilla health to full to prevent the entity from dying
-        bukkitEntity.setHealth(bukkitEntity.getAttribute(GENERIC_MAX_HEALTH).getValue());
+        bukkitEntity.setHealth(bukkitEntity.getAttribute(MAX_HEALTH).getValue());
     }
 
     /**
