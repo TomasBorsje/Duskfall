@@ -18,6 +18,33 @@
         "rarity": "legendary"
     },
     {
+        "def": "arrow",
+        "type": "arrow",
+        "id": "stone_arrow",
+        "name": "Stone Arrow",
+        "damage": 10,
+        "material": "arrow",
+        "rarity": "rare"
+    },
+    {
+        "def": "arrow",
+        "type": "arrow",
+        "id": "citrine_arrow",
+        "name": "Citrine Arrow",
+        "damage": 20,
+        "material": "arrow",
+        "rarity": "legendary"
+    },
+    {
+        "def": "bow",
+        "type": "bow",
+        "id": "wooden_shortbow",
+        "name": "Wooden Shortbow",
+        "damage": 20,
+        "material": "bow",
+        "rarity": "legendary"
+    },
+    {
         "def": "health_food",
         "type": "food",
         "id": "one_sushi_katsu",

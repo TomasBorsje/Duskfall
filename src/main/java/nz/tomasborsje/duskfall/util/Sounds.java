@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  */
 public class Sounds {
     public static void PlayLockboxOpenSound(MMOPlayer mmoPlayer) {
-        Player player = (Player) mmoPlayer.getBukkitEntity();
+        Player player = mmoPlayer.getBukkitEntity();
         // Play chest opening sound to player with a higher pitch
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1.5f);
         // Play 3 rising note block sounds over 15 ticks

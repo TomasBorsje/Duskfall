@@ -6,6 +6,7 @@ package nz.tomasborsje.duskfall.util;
 public class Stats {
     /**
      * Calculate the base maximum health for a player at a given level.
+     *
      * @param level The player's level.
      * @return The player's base maximum health.
      */
@@ -16,6 +17,7 @@ public class Stats {
 
     /**
      * Calculate the base maximum health for a mob at a given level.
+     *
      * @param level The mob's level.
      * @return The mob's base maximum health.
      */

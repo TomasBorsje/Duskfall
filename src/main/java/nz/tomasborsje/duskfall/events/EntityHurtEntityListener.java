@@ -21,7 +21,11 @@ public class EntityHurtEntityListener implements Listener {
         MMOEntity defender = EntityHandler.GetEntity(event.getEntity());
 
         // If either is null, return
-        if(attacker == null || defender == null) { return; }
+        if (attacker == null || defender == null) {
+            return;
+        }
+
+        attacker.getBukkitEntity().sendMessage("You attacked something.");
 
         // Get the attacker's damage
         int damage = attacker.getMeleeDamage();

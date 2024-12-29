@@ -4,15 +4,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import nz.tomasborsje.duskfall.definitions.ArmourDefinition;
 import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import nz.tomasborsje.duskfall.definitions.MeleeWeaponDefinition;
-import nz.tomasborsje.duskfall.ui.screens.PlayerScreen;
 import nz.tomasborsje.duskfall.ui.screens.ScreenManager;
 import nz.tomasborsje.duskfall.util.Icons;
 import nz.tomasborsje.duskfall.util.ItemUtil;
 import nz.tomasborsje.duskfall.util.MathUtil;
 import nz.tomasborsje.duskfall.util.Stats;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,11 +22,11 @@ import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
  * MMO-entity implementation of Player stats.
  */
 public class MMOPlayer implements MMOEntity {
-    private final Player bukkitPlayer;
     public final ScreenManager ui;
     public final InventoryManager inventory;
+    private final Player bukkitPlayer;
     private final List<BuffInstance> buffs = new ArrayList<>();
-    private int level = 1;
+    private final int level = 1;
     private int health;
     private int maxHealth;
     private int mana;
@@ -44,6 +41,7 @@ public class MMOPlayer implements MMOEntity {
 
     /**
      * Creates a new MMOPlayer with the given Bukkit player.
+     *
      * @param player The Bukkit player.
      */
     public MMOPlayer(Player player) {
@@ -106,6 +104,7 @@ public class MMOPlayer implements MMOEntity {
 
     /**
      * Adds the stats from the given item to the player's stats.
+     *
      * @param item The item to add the stats from.
      */
     private void addStatsForItem(StatProvider item) {
@@ -123,7 +122,7 @@ public class MMOPlayer implements MMOEntity {
         ticksSinceCombat++;
 
         // Tick buffs
-        for(BuffInstance buff : buffs) {
+        for (BuffInstance buff : buffs) {
             buff.tick();
         }
         // Remove expired buffs
@@ -139,7 +138,7 @@ public class MMOPlayer implements MMOEntity {
         displayActionBarInfo();
 
         // Set vanilla health to be a representation of the MMO health (+0.1 to ensure we never die on MC's side)
-        bukkitPlayer.setHealth(MathUtil.clamp((double)health / (double)maxHealth * 20.0, 0.1, 20.0));
+        bukkitPlayer.setHealth(MathUtil.clamp((double) health / (double) maxHealth * 20.0, 0.1, 20.0));
         // Set food level to max
         bukkitPlayer.setFoodLevel(20);
     }
@@ -151,7 +150,7 @@ public class MMOPlayer implements MMOEntity {
         regenTimer++;
 
         // Regen every 20 ticks
-        if(regenTimer >= 20) {
+        if (regenTimer >= 20) {
             regenTimer = 0;
 
             // Regen health
@@ -163,11 +162,12 @@ public class MMOPlayer implements MMOEntity {
 
     /**
      * Increases the player's current mana.
+     *
      * @param mana The amount of mana to gain.
      */
     public void gainMana(int mana) {
         this.mana += mana;
-        if(this.mana > maxMana) {
+        if (this.mana > maxMana) {
             this.mana = maxMana;
         }
     }
@@ -175,6 +175,7 @@ public class MMOPlayer implements MMOEntity {
 
     /**
      * Hurt the player, taking into accounts their defense, buffs, etc.
+     *
      * @param damageInstance The damage instance to hurt the player by.
      */
     @Override
@@ -183,7 +184,7 @@ public class MMOPlayer implements MMOEntity {
         markCombat();
         health -= damageInstance.getDamageAmount();
         // If health is below 0, kill the player
-        if(health <= 0) {
+        if (health <= 0) {
             kill(damageInstance);
         }
     }
@@ -204,13 +205,14 @@ public class MMOPlayer implements MMOEntity {
 
     /**
      * Heal the player, taking into accounts their buffs, etc.
+     *
      * @param health The amount of health to heal the player.
      */
     @Override
     public void heal(int health) {
         // Heal and clamp health
         this.health += health;
-        if(this.health > maxHealth) {
+        if (this.health > maxHealth) {
             this.health = maxHealth;
         }
     }
@@ -224,7 +226,7 @@ public class MMOPlayer implements MMOEntity {
         if (ItemUtil.IsCustomItem(heldItem)) {
             ItemDefinition definition = ItemUtil.GetPopulatedDefinition(heldItem);
             if (definition instanceof MeleeWeaponDefinition meleeWeaponDefinition) {
-                return meleeWeaponDefinition.damage;
+                return meleeWeaponDefinition.getDamage();
             }
         }
 
@@ -244,10 +246,9 @@ public class MMOPlayer implements MMOEntity {
         // TODO
         ticksSinceCombat = 1000; // Exit combat
 
-        if(damageInstance.getCause() == MMODamageCause.ENTITY) {
+        if (damageInstance.getCause() == MMODamageCause.ENTITY) {
             bukkitPlayer.sendMessage(ChatColor.RED + "You were killed by " + killer.getEntityName() + "!");
-        }
-        else {
+        } else {
             bukkitPlayer.sendMessage(ChatColor.RED + "You died!");
         }
         fillHealthAndMana();
@@ -270,8 +271,8 @@ public class MMOPlayer implements MMOEntity {
         String message = "";
 
         // If we're in combat, add the combat icon to the left
-        if(isInCombat()) {
-            message += ChatColor.DARK_RED + "!"+Icons.StrengthIcon + "!  ";
+        if (isInCombat()) {
+            message += ChatColor.DARK_RED + "!" + Icons.StrengthIcon + "!  ";
         }
 
         // Add health/max health display
@@ -282,8 +283,8 @@ public class MMOPlayer implements MMOEntity {
         message += " " + ChatColor.BLUE + Icons.ManaIcon + " " + ChatColor.WHITE + mana + "/" + maxMana;
 
         // Add combat indicator to the right too
-        if(isInCombat()) {
-            message += "  " + ChatColor.DARK_RED +"!"+ Icons.StrengthIcon +"!";
+        if (isInCombat()) {
+            message += "  " + ChatColor.DARK_RED + "!" + Icons.StrengthIcon + "!";
         }
 
         // Display

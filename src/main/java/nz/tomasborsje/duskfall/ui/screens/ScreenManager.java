@@ -9,10 +9,10 @@ import org.bukkit.inventory.Inventory;
  * Class that handles the creation and management of UI screens for a player.
  */
 public class ScreenManager {
-    private PlayerScreen currentScreen = null;
-    private Inventory currentInventory = null;
     private final MMOPlayer player;
     private final Player playerEntity;
+    private PlayerScreen currentScreen = null;
+    private Inventory currentInventory = null;
 
     public ScreenManager(MMOPlayer player) {
         this.player = player;
@@ -21,11 +21,12 @@ public class ScreenManager {
 
     /**
      * Opens a screen for the player, replacing any existing screen.
+     *
      * @param screen The screen to open.
      */
     public void openScreen(PlayerScreen screen) {
         currentScreen = screen;
-        currentInventory = Bukkit.createInventory(null, screen.getInventoryRows()*9, screen.getTitle());
+        currentInventory = Bukkit.createInventory(null, screen.getInventoryRows() * 9, screen.getTitle());
         screen.render(currentInventory);
         playerEntity.openInventory(currentInventory);
     }
@@ -44,7 +45,7 @@ public class ScreenManager {
      * Removes the current screen.
      */
     public void sendCloseEvent() {
-        if(currentScreen != null) {
+        if (currentScreen != null) {
             currentScreen.onClose();
         }
         currentScreen = null;
@@ -52,10 +53,11 @@ public class ScreenManager {
 
     /**
      * Sends a click event to the current screen, if there is one.
+     *
      * @param slot The slot that was clicked.
      */
     public void sendClickEvent(int slot) {
-        if(currentScreen != null) {
+        if (currentScreen != null) {
             currentScreen.onClick(slot);
             currentScreen.render(currentInventory);
         }

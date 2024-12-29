@@ -15,9 +15,11 @@ public class ServerTickRunner extends BukkitRunnable {
     @Override
     public void run() {
         // Check world exists before running
-        if(overworld == null) {
+        if (overworld == null) {
             overworld = Duskfall.plugin.getServer().getWorlds().get(0);
-            if(overworld == null) { return; }
+            if (overworld == null) {
+                return;
+            }
             // World has loaded, init
             initialise();
         }

@@ -11,14 +11,14 @@ public class EntityLoadListener implements Listener {
     @EventHandler
     public static void OnEntityLoad(EntitiesLoadEvent event) {
         // Remove all entities, or else we get leftover entities from the last time the server was running
-        for(Entity entity : event.getEntities()) {
+        for (Entity entity : event.getEntities()) {
             // If this is in the custom entity handler, don't remove
-            if(EntityHandler.GetEntity(entity) != null) {
+            if (EntityHandler.GetEntity(entity) != null) {
                 continue;
             }
 
             // If not a player, remove
-            if(!entity.getType().equals(EntityType.PLAYER)) {
+            if (!entity.getType().equals(EntityType.PLAYER)) {
                 entity.remove();
             }
         }

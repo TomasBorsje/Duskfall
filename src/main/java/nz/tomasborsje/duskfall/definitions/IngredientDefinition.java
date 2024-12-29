@@ -2,7 +2,6 @@ package nz.tomasborsje.duskfall.definitions;
 
 import com.google.gson.annotations.SerializedName;
 import nz.tomasborsje.duskfall.util.ItemUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -11,20 +10,22 @@ import org.bukkit.inventory.ItemStack;
  */
 public class IngredientDefinition {
 
-    @SerializedName("itemId")
-    private String itemId = null;
     @SerializedName("count")
     private final int count = 1;
+    @SerializedName("itemId")
+    private String itemId = null;
 
-    public IngredientDefinition() { }
+    public IngredientDefinition() {
+    }
 
     /**
      * Returns true if the given stack fulfills the ingredient.
+     *
      * @param stack The stack to check.
      * @return True if the stack fulfills the ingredient.
      */
     public boolean matches(ItemStack stack) {
-        if(stack == null) {
+        if (stack == null) {
             return false;
         }
         return ItemUtil.GetCustomId(stack).equals(itemId) && stack.getAmount() >= count;
@@ -32,6 +33,7 @@ public class IngredientDefinition {
 
     /**
      * Returns the item ID of the ingredient.
+     *
      * @return The item ID of the ingredient.
      */
     public String getItemId() {
@@ -44,6 +46,7 @@ public class IngredientDefinition {
 
     /**
      * Returns the amount of the ingredient required.
+     *
      * @return The amount of the ingredient required.
      */
     public int getCount() {

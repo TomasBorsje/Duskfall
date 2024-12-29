@@ -14,7 +14,7 @@ public class ServerListPingListener implements Listener {
     public static void onServerListPing(ServerListPingEvent event) {
         String version = "v0.0.2";
         // 44 characters per line (the 45th goes offscreen, but must still be accounted for)
-        String firstLine = ChatColor.BLUE+ChatColor.BOLD.toString()+StringUtils.center(ChatColor.RESET.toString()+ChatColor.BLUE+"☽ "+ChatColor.DARK_PURPLE+ChatColor.BOLD+" Duskfall "+ChatColor.RESET+ChatColor.BLUE+" ☽", 60)+" "+ChatColor.WHITE+version;
+        String firstLine = ChatColor.BLUE + ChatColor.BOLD.toString() + StringUtils.center(ChatColor.RESET.toString() + ChatColor.BLUE + "☽ " + ChatColor.DARK_PURPLE + ChatColor.BOLD + " Duskfall " + ChatColor.RESET + ChatColor.BLUE + " ☽", 60) + " " + ChatColor.WHITE + version;
         // Set motd
         event.setMotd(firstLine + "\n" + centerText(ChatColor.LIGHT_PURPLE.toString() + ChatColor.BOLD + "v0.0.2 - Pre Alpha", 58));
 

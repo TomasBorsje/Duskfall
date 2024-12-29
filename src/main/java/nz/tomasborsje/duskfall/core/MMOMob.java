@@ -2,7 +2,6 @@ package nz.tomasborsje.duskfall.core;
 
 import nz.tomasborsje.duskfall.definitions.MobDefinition;
 import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.ArrayList;
@@ -17,9 +16,9 @@ public class MMOMob implements MMOEntity {
     private final MobDefinition definition;
     private final LivingEntity bukkitEntity;
     private final List<BuffInstance> buffs = new ArrayList<>();
+    private final int level = 1;
     private int health = 1;
     private int maxHealth = 1;
-    private int level = 1;
 
     public MMOMob(LivingEntity entity, MobDefinition definition) {
         bukkitEntity = entity;
@@ -31,10 +30,10 @@ public class MMOMob implements MMOEntity {
     @Override
     public void tick() {
         // Tick buffs
-        for(BuffInstance buff : buffs) {
+        for (BuffInstance buff : buffs) {
             buff.tick();
             // If the buff has expired, remove it
-            if(buff.remainingDuration <= 0) {
+            if (buff.remainingDuration <= 0) {
                 removeBuff(buff);
             }
         }
@@ -47,12 +46,14 @@ public class MMOMob implements MMOEntity {
      * Updates the name plate of the entity to reflect its current state.
      */
     private void updateNamePlate() {
-        bukkitEntity.setCustomName(ChatColor.WHITE+"["+ChatColor.GOLD+level+ChatColor.WHITE+"] "+ChatColor.GREEN+definition.name+ChatColor.GRAY+" ("+health+"/"+maxHealth+")");
+        bukkitEntity.setCustomName(ChatColor.WHITE + "[" + ChatColor.GOLD + level + ChatColor.WHITE + "] " + ChatColor.GREEN + definition.name + ChatColor.GRAY + " (" + health + "/" + maxHealth + ")");
     }
 
     @Override
     public void hurt(DamageInstance damageInstance) {
-        if(health <= 0) { return; } // Can't hurt dead entities
+        if (health <= 0) {
+            return;
+        } // Can't hurt dead entities
         health -= damageInstance.getDamageAmount();
         if (health <= 0) {
             health = 0;
@@ -82,6 +83,7 @@ public class MMOMob implements MMOEntity {
 
     /**
      * Called when a mob dies to another attacker. If the killer is a player, they will receive experience and loot, etc.
+     *
      * @param damageInstance The damage instance that killed this entity.
      */
     @Override
@@ -89,9 +91,9 @@ public class MMOMob implements MMOEntity {
         bukkitEntity.setHealth(0);
 
         // If killed by a player...
-        if(damageInstance.getCause() == MMODamageCause.ENTITY && damageInstance.getAttacker() instanceof MMOPlayer player) {
+        if (damageInstance.getCause() == MMODamageCause.ENTITY && damageInstance.getAttacker() instanceof MMOPlayer player) {
             // TODO loot exp etc
-            player.getBukkitEntity().sendMessage("You killed "+getEntityName()+"!");
+            player.getBukkitEntity().sendMessage("You killed " + getEntityName() + "!");
         }
     }
 

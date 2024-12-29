@@ -24,10 +24,10 @@ public class HealthFoodDefinition extends ItemDefinition implements Usable {
 
     @Override
     public void onPlayerUse(MMOEntity user) {
-        if(user instanceof MMOPlayer player) {
-            player.getBukkitEntity().sendMessage(ChatColor.GRAY+"You ate "+rarity.colour+name+ChatColor.GRAY+"!");
-            player.addBuff(new NoncombatHealthRegenBuff(user, 20*20, healAmount));
-            player.getBukkitEntity().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*20, 0));
+        if (user instanceof MMOPlayer player) {
+            player.getBukkitEntity().sendMessage(ChatColor.GRAY + "You ate " + rarity.colour + name + ChatColor.GRAY + "!");
+            player.addBuff(new NoncombatHealthRegenBuff(user, 20 * 20, healAmount));
+            player.getBukkitEntity().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 20, 0));
         }
     }
 

@@ -1,47 +1,52 @@
 package nz.tomasborsje.duskfall;
 
-import net.minecraft.network.protocol.common.ClientboundTransferPacket;
 import nz.tomasborsje.duskfall.commands.GiveItemCommand;
 import nz.tomasborsje.duskfall.commands.PrintNbtCommand;
 import nz.tomasborsje.duskfall.commands.SpawnEntityCommand;
 import nz.tomasborsje.duskfall.commands.TryCraftCommand;
+import nz.tomasborsje.duskfall.core.DuskfallWorld;
 import nz.tomasborsje.duskfall.events.*;
 import nz.tomasborsje.duskfall.handlers.GlobalChatClient;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
 import nz.tomasborsje.duskfall.registries.MobRegistry;
 import nz.tomasborsje.duskfall.registries.RecipeRegistry;
+import nz.tomasborsje.duskfall.util.ResourcePackGen;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 /**
  * Main class of the plugin.
  */
 public class Duskfall extends JavaPlugin {
-    /** The plugin's data folder. */
     public static File dataFolder;
-    /** Plugin reference. **/
     public static Plugin plugin;
+    public static Logger logger;
     public static GlobalChatClient globalChat;
-    /** Tick runner that calls all custom tick events. **/
+    public static DuskfallWorld world;
+    /**
+     * Tick runner that calls all custom tick events.
+     **/
     ServerTickRunner serverTickRunner = new ServerTickRunner();
 
     @Override
     public void onEnable() {
         plugin = this;
+        logger = getLogger();
 
-        Bukkit.getLogger().info("Enabled Duskfall.");
+        Duskfall.logger.info("Enabled Duskfall.");
 
         // Get or create plugin's data folder
         dataFolder = getDataFolder();
         if (!dataFolder.exists()) {
             if (dataFolder.mkdir()) {
-                Bukkit.getLogger().info("Created data folder.");
+                Duskfall.logger.info("Created data folder.");
             } else {
-                Bukkit.getLogger().warning("Failed to create data folder!");
+                Duskfall.logger.warning("Failed to create data folder!");
             }
         }
 
@@ -62,6 +67,12 @@ public class Duskfall extends JavaPlugin {
         globalChat = new GlobalChatClient();
         globalChat.connect();
 
+        // Gen resource pack
+        ResourcePackGen.GenerateResourcePack();
+
+        // Create world instance
+        world = new DuskfallWorld();
+
         // Start server tick event
         serverTickRunner.runTaskTimer(plugin, 0, 1);
     }
@@ -71,7 +82,7 @@ public class Duskfall extends JavaPlugin {
         // Disable connection to global chat server
         globalChat.closeConnection(0, "Duskfall server shutting down.");
 
-        Bukkit.getLogger().info("Disabled Duskfall.");
+        Duskfall.logger.info("Disabled Duskfall.");
     }
 
     void registerEvents() {
@@ -89,6 +100,8 @@ public class Duskfall extends JavaPlugin {
         pluginManager.registerEvents(new ServerListPingListener(), plugin);
         pluginManager.registerEvents(new EntityLoadListener(), plugin);
         pluginManager.registerEvents(new EntityHurtListener(), plugin);
+        pluginManager.registerEvents(new BowFiredListener(), plugin);
+        pluginManager.registerEvents(new ArrowHitEntityListener(), plugin);
     }
 
     void registerCommands() {
@@ -96,6 +109,6 @@ public class Duskfall extends JavaPlugin {
         getCommand("spawnentity").setExecutor(new SpawnEntityCommand());
         getCommand("printnbt").setExecutor(new PrintNbtCommand());
         getCommand("trycraft").setExecutor(new TryCraftCommand());
-        Bukkit.getLogger().info("Registered commands.");
+        Duskfall.logger.info("Registered commands.");
     }
 }

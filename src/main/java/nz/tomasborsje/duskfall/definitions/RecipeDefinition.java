@@ -2,7 +2,6 @@ package nz.tomasborsje.duskfall.definitions;
 
 import com.google.gson.annotations.SerializedName;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
-import nz.tomasborsje.duskfall.util.ItemUtil;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

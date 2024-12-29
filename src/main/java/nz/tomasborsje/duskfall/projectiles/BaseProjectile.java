@@ -7,7 +7,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import nz.tomasborsje.duskfall.core.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -23,12 +22,12 @@ public class BaseProjectile implements MMOProjectile {
     private final Vector velocity;
     @Nullable
     private final MMOEntity owner;
+    private final float hitboxSize = 0.5f;
+    private final Vector3f scale = new Vector3f(0.5f, 0.5f, 0.5f);
     protected ServerLevel level;
     protected int maxLifeTime = 100;
     protected int remainingLifeTime;
     protected Display.BlockDisplay displayEntity;
-    private float hitboxSize = 0.5f;
-    private Vector3f scale = new Vector3f(0.5f, 0.5f, 0.5f);
 
     public BaseProjectile(@Nullable MMOEntity owner, ServerLevel level, Vector position, Vector velocity) {
         this.owner = owner;
@@ -50,7 +49,7 @@ public class BaseProjectile implements MMOProjectile {
     protected void updatePosition() {
         // Move position by velocity
         position.add(velocity);
-        displayEntity.setPos(position.getX()-0.5, position.getY()-0.5, position.getZ()-0.5);
+        displayEntity.setPos(position.getX() - 0.5, position.getY() - 0.5, position.getZ() - 0.5);
 
         // TODO: Smoother movement? Either using packets, the teleport_duration tag (how to set?) or transformation interpolation
         Quaternionf angle = new Quaternionf(new AxisAngle4f(remainingLifeTime * 10, 0, 1, 0));

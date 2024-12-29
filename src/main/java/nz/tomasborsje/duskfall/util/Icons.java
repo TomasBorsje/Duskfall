@@ -5,6 +5,7 @@ package nz.tomasborsje.duskfall.util;
  */
 public class Icons {
     public static final String DamageIcon = "✘";
+    public static final String BowDamageIcon = "➵";
     public static final String DefenseIcon = "\uD83D\uDEE1";
     public static final String HealthIcon = "❤";
     public static final String ManaIcon = "⭐";

@@ -16,32 +16,31 @@ public class EntityHurtListener implements Listener {
     public void OnEntityHurt(EntityDamageEvent event) {
         double damage = event.getDamage();
         event.setDamage(0);
-        if(EntityHandler.GetEntity(event.getEntity()) == null) {
+        if (EntityHandler.GetEntity(event.getEntity()) == null) {
             return;
         }
 
         MMOEntity entity = EntityHandler.GetEntity(event.getEntity());
-        if(entity == null) {
+        if (entity == null) {
             return;
         }
 
         DamageCause cause = event.getCause();
-        switch(cause) {
+        switch (cause) {
             case FALL: {
                 float percentMaxHp = (float) (damage * 5f);
-                int fallDamage = (int)(entity.getMaxHealth() * percentMaxHp/100f);
+                int fallDamage = (int) (entity.getMaxHealth() * percentMaxHp / 100f);
                 DamageInstance instance = new DamageInstance(MMODamageCause.FALL, DamageType.TRUE, null, fallDamage);
 
-                entity.getBukkitEntity().sendMessage(ChatColor.RED+"You took "+fallDamage+" fall damage!");
+                entity.getBukkitEntity().sendMessage(ChatColor.RED + "You took " + fallDamage + " fall damage!");
                 entity.hurt(instance);
-
-
                 break;
             }
             case CONTACT: {
-                int spikeDamage = (int)(entity.getMaxHealth() * 0.05f);
+                int spikeDamage = (int) (entity.getMaxHealth() * 0.05f);
                 DamageInstance instance = new DamageInstance(MMODamageCause.BLOCK_CONTACT_DAMAGE, DamageType.TRUE, null, spikeDamage);
                 entity.hurt(instance);
+                break;
             }
         }
 

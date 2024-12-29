@@ -1,9 +1,20 @@
 package nz.tomasborsje.duskfall.core;
 
+import javax.annotation.Nonnull;
+
 /**
  * Interface for item definitions that provide stats.
  */
 public interface StatProvider {
+
+    /**
+     * Get the condition that must be met before this item applies its stat changes.
+     *
+     * @return The condition that must be met before this item applies its stat changes.
+     */
+    @Nonnull
+    StatProviderCondition getStatProviderCondition();
+
     /**
      * @return The defense bonus of the item.
      */

@@ -2,8 +2,6 @@ package nz.tomasborsje.duskfall.commands;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import nz.tomasborsje.duskfall.definitions.ItemDefinition;
-import nz.tomasborsje.duskfall.registries.ItemRegistry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,12 +17,11 @@ public class PrintNbtCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         // If not a player, return
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
             return true;
         }
         // Get held item
-        Player player = (Player) sender;
         ItemStack heldItem = player.getInventory().getItemInMainHand();
         // If no item is held, return
         if (heldItem == null || heldItem.getType().isAir()) {

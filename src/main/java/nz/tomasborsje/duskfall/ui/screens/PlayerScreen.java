@@ -19,14 +19,16 @@ public abstract class PlayerScreen {
 
     public void render(Inventory inventory) {
         // Fill with white glass panes
-        for(int i = 0; i < inventory.getSize(); i++) {
+        for (int i = 0; i < inventory.getSize(); i++) {
             inventory.setItem(i, WHITE_GLASS_PANE);
         }
     }
 
-    public void onClose() {}
+    public void onClose() {
+    }
 
-    public void onClick(int slot) {}
+    public void onClick(int slot) {
+    }
 
     public int getInventoryRows() {
         return 6;

@@ -1,9 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "item/chest"
-  },
-  "overrides": [
-    {"predicate": {"custom_model_data": 164954}, "model": "duskfall:item/copper_lockbox"}
-  ]
-}

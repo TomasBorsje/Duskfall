@@ -1,9 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "item/leather_chestplate"
-  },
-  "overrides": [
-    {"predicate": {"custom_model_data": -788129}, "model": "duskfall:item/ranger_chestplate"}
-  ]
-}

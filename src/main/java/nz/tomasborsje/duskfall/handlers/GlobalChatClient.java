@@ -1,5 +1,6 @@
 package nz.tomasborsje.duskfall.handlers;
 
+import nz.tomasborsje.duskfall.Duskfall;
 import nz.tomasborsje.duskfall.core.GlobalMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,9 +21,10 @@ public class GlobalChatClient extends WebSocketClient {
 
     /**
      * Sends a message to the global chat server. The message will be broadcast to all players on all servers.
-     * @param type The type of message to send.
+     *
+     * @param type       The type of message to send.
      * @param playerName The name of the player who sent the message.
-     * @param message The message to send.
+     * @param message    The message to send.
      * @return Whether the message was sent successfully.
      */
     public boolean sendGlobalMessage(GlobalMessageType type, String playerName, String message) {
@@ -40,16 +42,16 @@ public class GlobalChatClient extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakeData) {
-        Bukkit.getLogger().info("Connected to the global chat server.");
+        Duskfall.logger.info("Connected to the global chat server.");
     }
 
     @Override
     public void onMessage(String message) {
-        Bukkit.getLogger().info("Received message: " + message);
+        Duskfall.logger.info("Received message: " + message);
         // If a discord message...
         if (message.startsWith("[Discord]")) {
             // colour [Discord] purple and the rest gray
-            message = message.replace("[Discord]", ChatColor.LIGHT_PURPLE+"[Discord]"+ChatColor.GRAY);
+            message = message.replace("[Discord]", ChatColor.LIGHT_PURPLE + "[Discord]" + ChatColor.GRAY);
         }
         // Broadcast to every player
         Bukkit.broadcastMessage(message);
@@ -57,12 +59,12 @@ public class GlobalChatClient extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        Bukkit.getLogger().info("Connection to global chat server lost. Code: " + code + ", reason: " + reason);
+        Duskfall.logger.info("Connection to global chat server lost. Code: " + code + ", reason: " + reason);
     }
 
     @Override
     public void onError(Exception ex) {
-        System.err.println("WebSocket error: " + ex.getMessage());
+        Duskfall.logger.severe("WebSocket error: " + ex.getMessage());
     }
 
     /**

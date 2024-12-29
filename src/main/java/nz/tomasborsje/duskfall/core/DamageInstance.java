@@ -11,6 +11,7 @@ public class DamageInstance {
     @Nullable
     private final MMOEntity attacker;
     private final int damageAmount;
+
     public DamageInstance(MMODamageCause cause,
                           DamageType type,
                           @Nullable MMOEntity attacker,
@@ -24,6 +25,7 @@ public class DamageInstance {
     public MMODamageCause getCause() {
         return cause;
     }
+
     public DamageType getType() {
         return type;
     }
@@ -32,12 +34,14 @@ public class DamageInstance {
      * Get the attacker/source of this damage.
      * For projects, this will be its owner.
      * For environmental damage, like fall damage or block contact damage, this will be null.
+     *
      * @return The attacker/source of this damage.
      */
     @Nullable
     public MMOEntity getAttacker() {
         return attacker;
     }
+
     public int getDamageAmount() {
         return damageAmount;
     }

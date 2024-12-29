@@ -49,7 +49,7 @@ public class ProjectileHandler {
             });
 
             // Check if the projectile's position is inside a non-solid block
-            if (world.getBlockAt((int)Math.floor(position.x), (int)Math.floor(position.y), (int)Math.floor(position.z)).getType().isSolid()) {
+            if (world.getBlockAt((int) Math.floor(position.x), (int) Math.floor(position.y), (int) Math.floor(position.z)).getType().isSolid()) {
                 projectile.onHitBlock();
             }
         }
@@ -66,6 +66,7 @@ public class ProjectileHandler {
 
     /**
      * Adds a custom projectile to the handler.
+     *
      * @param projectile The custom projectile to add.
      */
     public static void AddProjectile(MMOProjectile projectile) {

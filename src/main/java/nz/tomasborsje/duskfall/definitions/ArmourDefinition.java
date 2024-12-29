@@ -1,54 +1,14 @@
 package nz.tomasborsje.duskfall.definitions;
 
-import com.google.gson.annotations.SerializedName;
-import nz.tomasborsje.duskfall.core.StatProvider;
+import nz.tomasborsje.duskfall.core.StatProviderCondition;
 
-public class ArmourDefinition extends ItemDefinition implements StatProvider {
-    @SerializedName("defense")
-    public int defense = 0;
+import javax.annotation.Nonnull;
 
-    @SerializedName("strength")
-    public int strength = 0;
+public class ArmourDefinition extends StatProvidingItemDefinition {
 
-    @SerializedName("intelligence")
-    public int intelligence = 0;
-
-    @SerializedName("focus")
-    public int focus = 0;
-
-    @SerializedName("health")
-    public int health = 0;
-
-    @SerializedName("mana")
-    public int mana = 0;
-
+    @Nonnull
     @Override
-    public int getDefense() {
-        return defense;
-    }
-
-    @Override
-    public int getStrength() {
-        return strength;
-    }
-
-    @Override
-    public int getIntelligence() {
-        return intelligence;
-    }
-
-    @Override
-    public int getFocus() {
-        return focus;
-    }
-
-    @Override
-    public int getHealthBoost() {
-        return health;
-    }
-
-    @Override
-    public int getManaBoost() {
-        return mana;
+    public StatProviderCondition getStatProviderCondition() {
+        return StatProviderCondition.WHEN_WORN;
     }
 }

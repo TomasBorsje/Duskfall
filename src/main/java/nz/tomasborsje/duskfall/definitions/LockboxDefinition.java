@@ -20,7 +20,7 @@ public class LockboxDefinition extends ItemDefinition implements Usable {
 
     @Override
     public void onPlayerUse(MMOEntity user) {
-        if(user instanceof MMOPlayer player) {
+        if (user instanceof MMOPlayer player) {
             // Do loot
             Sounds.PlayLockboxOpenSound(player);
             player.ui.openScreen(new LockboxScreen(player, this));

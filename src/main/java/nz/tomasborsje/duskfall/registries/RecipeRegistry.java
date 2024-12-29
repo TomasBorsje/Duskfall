@@ -2,8 +2,8 @@ package nz.tomasborsje.duskfall.registries;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import nz.tomasborsje.duskfall.Duskfall;
 import nz.tomasborsje.duskfall.definitions.RecipeDefinition;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class RecipeRegistry {
     public static RecipeDefinition Get(String id) {
         // Check the recipe exists first
         if (!Contains(id)) {
-            Bukkit.getLogger().warning("Attempted to get recipe definition with id " + id + " but it does not exist!");
+            Duskfall.logger.warning("Attempted to get recipe definition with id " + id + " but it does not exist!");
             return null;
         }
         return recipeRegistry.get(id);
@@ -44,13 +44,13 @@ public class RecipeRegistry {
      * @param dataFolder The plugin's data folder.
      */
     public static void LoadCustomRecipes(File dataFolder) {
-        Bukkit.getLogger().info("Loading recipe schema from " + dataFolder.getAbsolutePath());
+        Duskfall.logger.info("Loading recipe schema from " + dataFolder.getAbsolutePath());
 
         // Get the /recipes subfolder
         File recipesFolder = new File(dataFolder, "recipes");
         if (!recipesFolder.exists()) {
             if (!recipesFolder.mkdir()) {
-                Bukkit.getLogger().warning("Failed to create /recipes subfolder!");
+                Duskfall.logger.warning("Failed to create /recipes subfolder!");
             }
         }
 
@@ -70,7 +70,7 @@ public class RecipeRegistry {
 
             // Parse a list of recipe definitions
             RecipeDefinition[] recipeDefinitions = gson.fromJson(json, RecipeDefinition[].class);
-            Bukkit.getLogger().info("Loading " + recipeDefinitions.length + " recipe definitions from " + recipeFile.getName());
+            Duskfall.logger.info("Loading " + recipeDefinitions.length + " recipe definitions from " + recipeFile.getName());
 
             // Register each recipe definition in this file
             for (RecipeDefinition recipeDefinition : recipeDefinitions) {
@@ -79,7 +79,7 @@ public class RecipeRegistry {
         }
 
         // Print total loaded definitions
-        Bukkit.getLogger().info("Finished loading recipes. Loaded a total of " + recipeRegistry.size() + " recipe definitions.");
+        Duskfall.logger.info("Finished loading recipes. Loaded a total of " + recipeRegistry.size() + " recipe definitions.");
     }
 
     /**
@@ -90,16 +90,16 @@ public class RecipeRegistry {
     public static void RegisterRecipe(RecipeDefinition recipeDefinition) {
         // Preconditions
         if (recipeDefinition == null) {
-            Bukkit.getLogger().warning("Attempted to register null recipe definition!");
+            Duskfall.logger.warning("Attempted to register null recipe definition!");
             return;
         }
         if (recipeDefinition.getId() == null || recipeDefinition.getId().isEmpty()) {
-            Bukkit.getLogger().warning("Attempted to register recipe definition with null or empty id!");
+            Duskfall.logger.warning("Attempted to register recipe definition with null or empty id!");
             return;
         }
 
         // Set each ingredient ID to be uppercase
-        for(var ingredient : recipeDefinition.getIngredients()) {
+        for (var ingredient : recipeDefinition.getIngredients()) {
             ingredient.setItemId(ingredient.getItemId().toUpperCase());
         }
 

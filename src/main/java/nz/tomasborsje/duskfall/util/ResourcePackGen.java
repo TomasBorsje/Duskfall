@@ -1,11 +1,11 @@
 package nz.tomasborsje.duskfall.util;
 
+import nz.tomasborsje.duskfall.Duskfall;
 import nz.tomasborsje.duskfall.definitions.ItemDefinition;
 import nz.tomasborsje.duskfall.registries.ItemRegistry;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
@@ -15,9 +15,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ResourcePackGen {
-    public static void main(String[] args) {
+    public static void GenerateResourcePack() {
+        Duskfall.logger.info("Generating resource pack...");
+
         // Get and create the required folders
-        File dataFolder = new File("C:/SpigotPlugins/Duskfall/server/plugins/Duskfall");
         File outputFolder = Paths.get("target", "DuskfallResourcePack").toFile();
         File mcOverrideModels = new File(outputFolder, "assets/minecraft/models/item");
         File duskfallModels = new File(outputFolder, "assets/duskfall/models/item");
@@ -27,15 +28,12 @@ public class ResourcePackGen {
         duskfallModels.mkdirs();
         duskfallTextures.mkdirs();
 
-        // Load items
-        ItemRegistry.LoadItemDefinitions(dataFolder);
-
         HashMap<String, Set<ItemDefinition>> itemsByMaterial = new HashMap<String, Set<ItemDefinition>>();
 
         // Get all items and sort them into a dictionary of sets based on their material
         for (ItemDefinition item : ItemRegistry.GetAllItems()) {
             // First, check if a texture override exists in textures/id.png
-            File textureFile = Paths.get("textures",item.id.toLowerCase() + ".png").toFile();
+            File textureFile = Paths.get("textures", item.id.toLowerCase() + ".png").toFile();
             if (!textureFile.exists()) {
                 continue;
             }
@@ -77,9 +75,6 @@ public class ResourcePackGen {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                // Also copy over the texture file to the layer0 texture location
-
             }
 
             // Create the model json
@@ -91,6 +86,7 @@ public class ResourcePackGen {
                     "  \"overrides\": [\n");
             int i = 0;
             for (ItemDefinition item : items) {
+                // Model overrides
                 modelJson.append("    {\"predicate\": {\"custom_model_data\": ").append((int) ((float) (item.id.toLowerCase().hashCode() % 1_000_000))).append("}, \"model\": \"duskfall:item/").append(item.id.toLowerCase()).append("\"}");
                 if (i < items.size() - 1) {
                     modelJson.append(",");
@@ -112,7 +108,7 @@ public class ResourcePackGen {
             }
 
             // Log
-            System.out.println("Generated model for " + material + " with " + items.size() + " custom model overrides.");
+            Duskfall.logger.info("Generated model for " + material + " with " + items.size() + " custom model overrides.");
         }
 
         // Add pack.mcmeta to the output folder
@@ -141,7 +137,7 @@ public class ResourcePackGen {
             zipFile(outputFolder, outputFolder.getName(), zipOut, true);
             zipOut.close();
             fos.close();
-            System.out.println("Zip file has been created at "+ resourcePackZip.getAbsolutePath());
+            Duskfall.logger.info("Zip file has been created at " + resourcePackZip.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }

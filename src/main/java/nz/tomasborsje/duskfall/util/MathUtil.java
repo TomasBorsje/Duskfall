@@ -6,6 +6,7 @@ package nz.tomasborsje.duskfall.util;
 public class MathUtil {
     /**
      * Clamps a value between a minimum and maximum.
+     *
      * @return The clamped value.
      */
     public static int clamp(int value, int min, int max) {
@@ -14,6 +15,7 @@ public class MathUtil {
 
     /**
      * Clamps a value between a minimum and maximum.
+     *
      * @return The clamped value.
      */
     public static float clamp(float value, float min, float max) {
@@ -22,6 +24,7 @@ public class MathUtil {
 
     /**
      * Clamps a value between a minimum and maximum.
+     *
      * @return The clamped value.
      */
     public static double clamp(double value, double min, double max) {

@@ -17,7 +17,7 @@ public class ItemDefinitionDeserializer implements JsonDeserializer<ItemDefiniti
         if (jsonObject.has("customClass")) {
             String customClassName = jsonObject.get("customClass").getAsString();
             try {
-                Class<?> customClass = Class.forName("nz.tomasborsje.duskfall.definitions.custom."+customClassName);
+                Class<?> customClass = Class.forName("nz.tomasborsje.duskfall.definitions.custom." + customClassName);
                 return context.deserialize(json, customClass);
             } catch (ClassNotFoundException e) {
                 throw new JsonParseException("Unknown custom class: " + customClassName);
@@ -37,8 +37,10 @@ public class ItemDefinitionDeserializer implements JsonDeserializer<ItemDefiniti
                 yield itemDefinition;
             }
             case "armour" -> context.deserialize(json, ArmourDefinition.class);
+            case "bow" -> context.deserialize(json, BowWeaponDefinition.class);
             case "melee_weapon" -> context.deserialize(json, MeleeWeaponDefinition.class);
             case "health_food" -> context.deserialize(json, HealthFoodDefinition.class);
+            case "arrow" -> context.deserialize(json, ArrowItemDefinition.class);
             case "lockbox" -> context.deserialize(json, LockboxDefinition.class);
             default -> throw new JsonParseException("Unknown item definition: " + definitionType);
         };

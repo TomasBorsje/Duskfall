@@ -12,7 +12,7 @@ public class NoncombatHealthRegenBuff extends BuffInstance {
 
     public NoncombatHealthRegenBuff(MMOEntity entity, int duration, float healAmount) {
         super(entity, duration);
-        this.healPerTick = healAmount / (float)duration;
+        this.healPerTick = healAmount / (float) duration;
         this.fractionalHealing = 0.0f;
     }
 
@@ -20,10 +20,10 @@ public class NoncombatHealthRegenBuff extends BuffInstance {
     public void tick() {
         super.tick();
         // Calculate the total healing (integer part)
-        int totalHealing = (int)(healPerTick + fractionalHealing);
+        int totalHealing = (int) (healPerTick + fractionalHealing);
 
         // Apply the integer part of healing to the entity's health
-        if(totalHealing > 0) {
+        if (totalHealing > 0) {
             entity.heal(totalHealing);
         }
 

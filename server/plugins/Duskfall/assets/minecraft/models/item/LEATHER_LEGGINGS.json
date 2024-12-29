@@ -1,9 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "item/leather_leggings"
-  },
-  "overrides": [
-    {"predicate": {"custom_model_data": 723732}, "model": "duskfall:item/ranger_leggings"}
-  ]
-}

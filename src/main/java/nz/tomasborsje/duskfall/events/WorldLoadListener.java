@@ -1,6 +1,6 @@
 package nz.tomasborsje.duskfall.events;
 
-import org.bukkit.Bukkit;
+import nz.tomasborsje.duskfall.Duskfall;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -11,17 +11,18 @@ import org.bukkit.event.world.WorldLoadEvent;
 public class WorldLoadListener implements Listener {
     @EventHandler
     public void OnWorldLoad(WorldLoadEvent event) {
-        Bukkit.getLogger().info("Setting defaults on world load...");
+        Duskfall.logger.info("Setting defaults on world load...");
         World world = event.getWorld();
 
         // Set game rules
         setWorldDefaults(world);
 
         // Remove ALL entities, or else we get leftover entities from the last time the server was running
-        for(Entity entity : world.getEntities()) {
+        for (Entity entity : world.getEntities()) {
             entity.remove();
         }
     }
+
     void setWorldDefaults(World world) {
         world.setTime(6000); // Noon
         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
